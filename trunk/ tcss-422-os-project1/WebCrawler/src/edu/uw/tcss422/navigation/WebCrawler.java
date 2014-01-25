@@ -9,12 +9,16 @@ public class WebCrawler {
    * @param args Command line arguments passed by user
    */
   public static void main(String[] args) {
-    PageRetriever pageRetriever = new PageRetriever("http://www.aol.com");
+    PageRetriever pageRetriever = new PageRetriever("http://www.facebook.com");
+    pageRetriever.addURL("http://www.aol.com");
+    pageRetriever.addURL("http://www.aol.com");
     
     do {
       pageRetriever.retrieve();
       Page page = pageRetriever.next();
-      System.out.println(page.getContent());
+      
+      if( page != null )
+        System.out.println(page.getURL());
     
     } while(pageRetriever.hasNext());
   }
