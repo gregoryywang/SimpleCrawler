@@ -32,10 +32,24 @@ public class PageParser {
 	private Collection<String> words = new ArrayList<String>();
 	
 	/**
+	 * Alternative parsing using Page object as input.
+	 * @param docPage the Page object to parse
+	 */
+	public void parse(Page docPage) {
+		try {
+			Document doc = Jsoup.connect(docPage.getURL()).get();
+			parse(doc);
+		} catch (IOException e) {
+			System.out.println("Page Object to URL Parsing failed!");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Alternative parsing using URL address as input. 
 	 * @param url the URL address to parse.
 	 */
-	public void urlParse(String url) {
+	public void parse(String url) {
         try {
 			Document doc = Jsoup.connect(url).get();
 			parse(doc);
@@ -46,7 +60,7 @@ public class PageParser {
 	}
 	
 	/**
-	 * Parses an HTML Document object and extracts URLs and keywords.
+	 * Parses a HTML Document object and extracts URLs and keywords.
 	 * @param doc the HTML document to parse
 	 */
 	public void parse(Document doc) {
@@ -65,7 +79,7 @@ public class PageParser {
 			words.add(link.text());
 			
 			//DEBUG
-			// System.out.println(link.text());
+			//System.out.println(link.text());
         }
 		
 		// Add all links from this document into queue in PageRetriever. Collisions are handled by the retriever.
@@ -77,6 +91,15 @@ public class PageParser {
             System.out.printf(" * a: <%s>  (%s)", link.attr("abs:href"), link.text());
         }
         */
+	}
+	
+	/**
+	 * Tokenizes the elements in the ArrayList into individual words where applicable, 
+	 * stores them back into the ArrayList 
+	 * @param source the ArrayList containing Strings to tokenize.
+	 */
+	public void stringTokenizer(ArrayList<String> source){
+		// TODO: implement
 	}
 	
 	/**
