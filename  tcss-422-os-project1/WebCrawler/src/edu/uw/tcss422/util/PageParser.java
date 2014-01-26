@@ -25,7 +25,7 @@ public class PageParser {
 		// Parse the document for URLs.
 		links = doc.select("a[href]");
 		
-		// Adds all words in the HDPL body to collection of words.
+		// Adds all words in the HTML body to collection of words.
 		words.add(doc.body().text());
 		
 		// DEBUG
