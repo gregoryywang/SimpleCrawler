@@ -12,9 +12,9 @@ public class PageParser {
 
 	// A collection of URLs parsed from the Document.
 	private Elements links;
-	
+		
 	// A collection of keywords parsed from the Document.
-	Collection<String> keywords = new ArrayList<String>();
+	private Collection<String> words = new ArrayList<String>();
 	
 	/**
 	 * Parses an HTML Document object and extracts URLs and keywords.
@@ -25,10 +25,16 @@ public class PageParser {
 		// Parse the document for URLs.
 		links = doc.select("a[href]");
 		
-		// Add link text to list of keywords
+		// Adds all words in the HDPL body to collection of words.
+		words.add(doc.body().text());
+		
+		// DEBUG
+		System.out.println("Word list for this page: " + words);
+		
+		// Add link texts to list of keywords
 		for (Element link : links) {
 
-			keywords.add(link.text());
+			words.add(link.text());
 			
 			//DEBUG
 			// System.out.println(link.text());
@@ -56,11 +62,11 @@ public class PageParser {
 	}
 	
 	/**
-	 * Gets all keywords stored for current Document.
-	 * @return a list of keywords
+	 * Gets all words stored for current Document.
+	 * @return a list of words
 	 */
-	public Collection<String> getKeywords() {
-		return keywords;
+	public Collection<String> getWords() {
+		return words;
 	}
 	
 	/**
@@ -71,10 +77,10 @@ public class PageParser {
 	}
 	
 	/**
-	 * Clears the keywords list to parse another Document.
+	 * Clears the words list to parse another Document.
 	 */
-	public void clearKeywords() {
-		keywords.clear();
+	public void clearWords() {
+		words.clear();
 	}
 	
 }
