@@ -29,18 +29,15 @@ public class PageParser {
 		words.add(doc.body().text());
 		
 		// DEBUG
-		System.out.println("Word list for this page: " + words);
+		// System.out.println("Word list for this page: " + words);
 		
-		// Add link texts to list of keywords
+		// Add link texts to list of words
 		for (Element link : links) {
-
 			words.add(link.text());
 			
 			//DEBUG
 			// System.out.println(link.text());
-
         }
-		
 		
 		// Add all links from this document into queue in PageRetriever. Collisions are handled by the retriever.
 		// ???? This functionality should be implemented in a controller class, probably WebCrawler.java
