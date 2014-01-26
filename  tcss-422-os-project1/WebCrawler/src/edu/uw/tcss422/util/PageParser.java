@@ -1,8 +1,19 @@
 package edu.uw.tcss422.util;
+/**
+ * PageParser.java
+ * A simple parser using JSoup to extract elements from web pages.
+ * Requires Document object of web page to parse, or the page URL.
+ * Stores and returns all URLs and words found in the Document object.
+ * 
+ * @author yongyuwang
+ * @version 01-25-2014
+ */
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -10,11 +21,29 @@ import org.jsoup.select.Elements;
 
 public class PageParser {
 
-	// A collection of URLs parsed from the Document.
+	/**
+	 * A collection of URLs parsed from the Document.
+	 */
 	private Elements links;
-		
-	// A collection of keywords parsed from the Document.
+	
+	/**
+	 * 	A collection of words parsed from the Document.
+	 */
 	private Collection<String> words = new ArrayList<String>();
+	
+	/**
+	 * Alternative parsing using URL address as input. 
+	 * @param url the URL address to parse.
+	 */
+	public void urlParse(String url) {
+        try {
+			Document doc = Jsoup.connect(url).get();
+			parse(doc);
+		} catch (IOException e) {
+			System.out.println("URL Parsing failed!");
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * Parses an HTML Document object and extracts URLs and keywords.

@@ -1,7 +1,13 @@
+/**
+ * ParserTest.java
+ * Tests the PageParser for correct functionality. 
+ */
+
 package edu.uw.tcss422.util;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Scanner;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,7 +19,12 @@ public class ParserTest {
 	    
 		PageParser parser = new PageParser();
 		
-		String url = "http://www.aol.com"; 
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Enter the URL address of the site you wish to parse: ");
+		String url = scan.nextLine(); 
+		if (url.equals("1")) {
+			url = "http://www.aol.com";
+		}
 		
         Document doc = Jsoup.connect(url).get();
         
@@ -28,9 +39,10 @@ public class ParserTest {
         }
 
         // keyword search test
-        String keyword = "Sports";
         System.out.println("Word list for this page: " + words);
-        System.out.println("Page contains the word " + keyword + ": " + words.contains(keyword));
+        System.out.println("Enter the keyword you wish to search: ");
+        String keyword = scan.nextLine();
+        System.out.print("Page contains the word " + keyword + ": " + words.contains(keyword));
     
 	}
 
