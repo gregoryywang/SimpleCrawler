@@ -27,7 +27,10 @@ public class ParserTest {
         	System.out.println(link.attr("abs:href"));
         }
 
-        System.out.println(words.contains("Sports"));
+        // keyword search test
+        String keyword = "Sports";
+        System.out.println("Word list for this page: " + words);
+        System.out.println("Page contains the word " + keyword + ": " + words.contains(keyword));
     
 	}
 
