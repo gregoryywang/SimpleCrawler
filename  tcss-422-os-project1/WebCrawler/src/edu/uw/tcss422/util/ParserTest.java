@@ -20,18 +20,14 @@ public class ParserTest {
         parser.parse(doc);
 
         Elements links = parser.getLinks();
-        Collection<String> keywords = parser.getKeywords();
+        Collection<String> words = parser.getWords();
         
         // Iterate over all links
         for (Element link : links) {
         	System.out.println(link.attr("abs:href"));
         }
-        
-        // Iterate over all keywords
-        for (String keyword : keywords){
-        	System.out.println(keyword);
-        }
-        
+
+        System.out.println(words.contains("Sports"));
     
 	}
 
