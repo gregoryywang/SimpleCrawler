@@ -27,12 +27,12 @@ public class PageParser {
 	private Elements links;
 	
 	/**
-	 * 	A collection of words parsed from the Document. This should be mirrored in the Page object.
+	 * A collection of words parsed from the Document. This should be mirrored in the Page object.
 	 */
 	private Collection<String> words = new ArrayList<String>();
 	
 	/**
-	 *  A collection of ParseObjects which stores the results for each parse for the PageAnalyzer.
+	 * A collection of ParseObjects which stores the results for each parse for the PageAnalyzer.
 	 */
 	private Collection<ParseObject> parseResults = new ArrayList<ParseObject>();
 	
@@ -45,8 +45,8 @@ public class PageParser {
 		Document doc = Jsoup.parse(page.getContent());
 		// calls on main parse method to parse this Document.
 		parse(doc);
-		// creates a new ParseObject, saves words and links lists into ParseObject.
-		ParseObject currentParse = new ParseObject(words, links);
+		// creates a new ParseObject, saves a copy of the words and links lists into ParseObject.
+		ParseObject currentParse = new ParseObject(new ArrayList<String>(words), links.clone());
 		// saves ParseObject into the Collection of these objects.
 		parseResults.add(currentParse);
 		// clears the words and links list for the next page to parse.

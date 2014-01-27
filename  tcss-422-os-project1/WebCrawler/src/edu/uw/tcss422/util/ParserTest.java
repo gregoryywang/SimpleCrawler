@@ -28,6 +28,8 @@ public class ParserTest {
 		
         Document doc = Jsoup.connect(url).get();
         
+        
+        /* old tests that does not use the ParseObject.
         parser.parse(doc);
 
         Elements links = parser.getLinks();
@@ -44,6 +46,32 @@ public class ParserTest {
         System.out.println("Enter the keyword you wish to search: [THIS FEATURE DOES NOT WORK CORRECTLY YET]");
         String keyword = scan.nextLine();
         System.out.print("Page contains the word [" + keyword + "]: " + words.contains(keyword));
+        
+        */
+        
+        // simulate work done in PageRetriver for a single page.
+        String content = doc.html();
+        Page page = new Page(url, content);
+        parser.parse(page);
+        
+        Collection <ParseObject> results = parser.getParseObjects();
+        
+        // displays words and links for each ParseObject.
+        for (ParseObject object : results) {
+        	
+        	Elements links = object.getLinks();
+        	System.out.println("\nParsing complete. Here's a list of links found on this site:");
+            // Iterate over all links
+            for (Element link : links) {
+            	System.out.println(link.attr("abs:href"));
+            }
+        	
+            Collection<String> words = object.getWords();
+            System.out.println("\nWord list for this page: " + words);
+            System.out.println("Enter the keyword you wish to search: [THIS FEATURE DOES NOT WORK CORRECTLY YET]");
+            String keyword = scan.nextLine();
+            System.out.print("Page contains the word [" + keyword + "]: " + words.contains(keyword));
+        }
     
 	}
 
