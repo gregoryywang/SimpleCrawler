@@ -6,7 +6,7 @@ package edu.uw.tcss422.util;
  * Stores and returns all URLs and words found in the Document object.
  * 
  * @author yongyuwang
- * @version 01-25-2014
+ * @version 01-26-2014
  */
 
 import java.io.IOException;
@@ -22,12 +22,12 @@ import org.jsoup.select.Elements;
 public class PageParser {
 
 	/**
-	 * A collection of URLs parsed from the Document.
+	 * A collection of URLs parsed from the Document. This should be mirrored in the Page object.
 	 */
 	private Elements links;
 	
 	/**
-	 * 	A collection of words parsed from the Document.
+	 * 	A collection of words parsed from the Document. This should be mirrored in the Page object.
 	 */
 	private Collection<String> words = new ArrayList<String>();
 	
@@ -38,7 +38,11 @@ public class PageParser {
 	public void parse(Page docPage) {
 		try {
 			Document doc = Jsoup.connect(docPage.getURL()).get();
+			// calls on main parse method to parse this Document.
 			parse(doc);
+			// saves words and links list back into Page object.
+			docPage.setLinks(links);
+			docPage.setWords(words);
 		} catch (IOException e) {
 			System.out.println("Page Object to URL Parsing failed!");
 			e.printStackTrace();
@@ -81,9 +85,6 @@ public class PageParser {
 			//DEBUG
 			//System.out.println(link.text());
         }
-		
-		// Add all links from this document into queue in PageRetriever. Collisions are handled by the retriever.
-		// ???? This functionality should be implemented in a controller class, probably WebCrawler.java
 		
 		/* DEBUG
 		System.out.printf("\nLinks: (%d)", links.size());
