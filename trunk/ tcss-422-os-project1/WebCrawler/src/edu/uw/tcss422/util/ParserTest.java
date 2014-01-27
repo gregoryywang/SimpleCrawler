@@ -48,7 +48,7 @@ public class ParserTest {
         	
             Collection<String> words = object.getWords();
             System.out.println("\nWord list for this page: " + words);
-            System.out.println("Enter the keyword you wish to search: [THIS FEATURE DOES NOT WORK CORRECTLY YET]");
+            System.out.println("Enter the keyword you wish to search: ");
             String keyword = scan.nextLine();
             System.out.print("Page contains the word [" + keyword + "]: " + words.contains(keyword));
         }
