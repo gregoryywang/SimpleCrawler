@@ -8,29 +8,23 @@ import org.jsoup.select.Elements;
 public class ParseObject {
 	
 	  /**
-	   * A collection of URLs parsed from the this page by the PageRetriver.
+	   * A collection of URLs parsed from the page by the PageRetriver.
 	   */
 	  private Elements links;
 
 	  /**
-	   * 	A collection of words parsed from this page by the PageRetriver.
+	   * 	A collection of words parsed from the page by the PageRetriver.
 	   */
 	  private Collection<String> words = new ArrayList<String>();
-	
+	  
 	  /**
-	   * Sets the list of all links parsed from this page by the PageRetriver.
-	   * @param a list of links
+	   * Constructor for ParseObject
+	   * @param words the list of words parsed from the page.
+	   * @param links the list of links parsed from the page.
 	   */
-	  public void setLinks(Elements links) {
-		  this.links = links;
-	  }
-
-	  /**
-	   * Sets the list of all words parsed from this page by the PageRetriver.
-	   * @param a list of words
-	   */
-	  public void setWords(Collection<String> words) {
+	  public ParseObject(Collection<String> words, Elements links) {
 		  this.words = words;
+		  this.links = links;
 	  }
 	  
 	  /**

@@ -41,14 +41,12 @@ public class PageParser {
 	 * @param docPage the Page object to parse
 	 */
 	public void parse(Page page) {
-		// creates a new ParseObject to store parse results for this page.
-		ParseObject currentParse = new ParseObject();
+
 		Document doc = Jsoup.parse(page.getContent());
 		// calls on main parse method to parse this Document.
 		parse(doc);
-		// saves words and links list back into ParseObject.
-		currentParse.setLinks(links);
-		currentParse.setWords(words);
+		// creates a new ParseObject, saves words and links lists into ParseObject.
+		ParseObject currentParse = new ParseObject(words, links);
 		// saves ParseObject into the Collection of these objects.
 		parseResults.add(currentParse);
 		// clears the words and links list for the next page to parse.
