@@ -74,9 +74,10 @@ public class PageParser {
 	public Collection<String> stringTokenizer(ArrayList<String> source){
 		Collection<String> tolkenizedWords = new ArrayList<String>();
 		for (Iterator<String> iterator = source.iterator(); iterator.hasNext();){
-			String current = (String) iterator.next();
+			String current = iterator.next();
 			String[] tolken = current.split(" ");
 			for (String element : tolken) {
+				element = element.toLowerCase();
 				tolkenizedWords.add(element);
 			}
 		}
