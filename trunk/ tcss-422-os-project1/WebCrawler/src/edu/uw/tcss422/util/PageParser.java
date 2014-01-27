@@ -32,25 +32,33 @@ public class PageParser {
 	private Collection<String> words = new ArrayList<String>();
 	
 	/**
-	 * Alternative parsing using Page object as input.
+	 *  A collection of ParseObjects which stores the results for each parse for the PageAnalyzer.
+	 */
+	private Collection<ParseObject> parseResults = new ArrayList<ParseObject>();
+	
+	/**
+	 * Main parsing input method using Page object as input.
 	 * @param docPage the Page object to parse
 	 */
-	public void parse(Page docPage) {
-		try {
-			Document doc = Jsoup.connect(docPage.getURL()).get();
-			// calls on main parse method to parse this Document.
-			parse(doc);
-			// saves words and links list back into Page object.
-			docPage.setLinks(links);
-			docPage.setWords(words);
-		} catch (IOException e) {
-			System.out.println("Page Object to URL Parsing failed!");
-			e.printStackTrace();
-		}
+	public void parse(Page page) {
+		// creates a new ParseObject to store parse results for this page.
+		ParseObject currentParse = new ParseObject();
+		Document doc = Jsoup.parse(page.getContent());
+		// calls on main parse method to parse this Document.
+		parse(doc);
+		// saves words and links list back into ParseObject.
+		currentParse.setLinks(links);
+		currentParse.setWords(words);
+		// saves ParseObject into the Collection of these objects.
+		parseResults.add(currentParse);
+		// clears the words and links list for the next page to parse.
+		clearWords();
+		clearLinks();
 	}
 	
 	/**
 	 * Alternative parsing using URL address as input. 
+	 * Bypasses PageRetriver.
 	 * @param url the URL address to parse.
 	 */
 	public void parse(String url) {
@@ -131,6 +139,21 @@ public class PageParser {
 	 */
 	public void clearWords() {
 		words.clear();
+	}
+	
+	/**
+	 * Gets the collection of ParseObjects.
+	 * @return A collection of ParseObjects.
+	 */
+	public Collection<ParseObject> getParseObjects() {
+		return parseResults;
+	}
+	
+	/**
+	 * Clears the collection of ParseObjects.
+	 */
+	public void clearParseObjects() {
+		parseResults.clear();
 	}
 	
 }
