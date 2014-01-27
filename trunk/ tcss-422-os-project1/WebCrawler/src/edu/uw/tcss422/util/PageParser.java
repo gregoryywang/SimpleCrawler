@@ -31,6 +31,8 @@ public class PageParser {
 	 * @param docPage the Page object to parse
 	 */
 	public void parse(Page page) {
+		
+		long startTime = System.nanoTime();
 
 		ArrayList<String> untokenizdWords = new ArrayList<String>();
 		
@@ -62,6 +64,11 @@ public class PageParser {
 		
 		// saves ParseObject into the Collection of these objects.
 		parseResults.add(currentParse);
+		
+		// saves total parse time into ParseObject
+		long endTime = System.nanoTime();
+		long duration = endTime - startTime;
+		currentParse.setParseTime(duration);
 	}
 	
 	
