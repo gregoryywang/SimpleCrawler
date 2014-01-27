@@ -48,7 +48,7 @@ public class ParserTest {
         	
             Collection<String> words = object.getWords();
             System.out.println("\nWord list for this page: " + words);
-            System.out.println("Enter the keyword you wish to search: ");
+            System.out.println("Enter the keyword you wish to search [MUST BE LOWERCASE!]: ");
             String keyword = scan.nextLine();
             System.out.println("Page contains the word [" + keyword + "]: " + words.contains(keyword));
             System.out.println("Total parsing time for this page was " + object.getParseTime() + " milliseconds.");
