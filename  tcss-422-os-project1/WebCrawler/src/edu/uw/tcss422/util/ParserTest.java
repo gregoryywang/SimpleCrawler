@@ -33,7 +33,7 @@ public class ParserTest {
         Elements links = parser.getLinks();
         Collection<String> words = parser.getWords();
         
-        System.out.println("Parsing complete. Here's a list of links found on this site:");
+        System.out.println("\nParsing complete. Here's a list of links found on this site:");
         // Iterate over all links
         for (Element link : links) {
         	System.out.println(link.attr("abs:href"));
@@ -43,7 +43,7 @@ public class ParserTest {
         System.out.println("\nWord list for this page: " + words);
         System.out.println("Enter the keyword you wish to search: [THIS FEATURE DOES NOT WORK CORRECTLY YET]");
         String keyword = scan.nextLine();
-        System.out.print("Page contains the word " + keyword + ": " + words.contains(keyword));
+        System.out.print("Page contains the word [" + keyword + "]: " + words.contains(keyword));
     
 	}
 
