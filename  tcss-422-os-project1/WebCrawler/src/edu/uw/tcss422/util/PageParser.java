@@ -11,6 +11,7 @@ package edu.uw.tcss422.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,12 +27,12 @@ public class PageParser {
 	private Collection<ParseObject> parseResults = new ArrayList<ParseObject>();
 	
 	/**
-	 * Main parsing input method using Page object as input.
+	 * Main parsing method using Page object as input.
 	 * @param docPage the Page object to parse
 	 */
 	public void parse(Page page) {
 
-		Collection<String> words = new ArrayList<String>();
+		ArrayList<String> untokenizdWords = new ArrayList<String>();
 		
 		Elements links;
 		
@@ -41,18 +42,20 @@ public class PageParser {
 		links = doc.select("a[href]");
 
 		// Adds all words in the HTML body to collection of words.
-		words.add(doc.body().text());
+		untokenizdWords.add(doc.body().text());
 
 		// DEBUG
 		// System.out.println("Word list for this page: " + words);
 
 		// Add link texts to list of words
 		for (Element link : links) {
-			words.add(link.text());
+			untokenizdWords.add(link.text());
 
 			//DEBUG
 			//System.out.println(link.text());
 		}
+		
+		Collection<String> words = stringTokenizer(untokenizdWords);
 		
 		// creates a new ParseObject, saves a copy of the words and links lists into ParseObject.
 		ParseObject currentParse = new ParseObject(words, links);
@@ -66,9 +69,18 @@ public class PageParser {
 	 * Tokenizes the elements in the ArrayList into individual words where applicable, 
 	 * stores them back into the ArrayList 
 	 * @param source the ArrayList containing Strings to tokenize.
+	 * @return tolkenizedWords the tokenizedArrayList of strings.
 	 */
-	public void stringTokenizer(ArrayList<String> source){
-		// TODO: implement
+	public Collection<String> stringTokenizer(ArrayList<String> source){
+		Collection<String> tolkenizedWords = new ArrayList<String>();
+		for (Iterator<String> iterator = source.iterator(); iterator.hasNext();){
+			String current = (String) iterator.next();
+			String[] tolken = current.split(" ");
+			for (String element : tolken) {
+				tolkenizedWords.add(element);
+			}
+		}
+		return tolkenizedWords;
 	}
 	
 	
