@@ -11,6 +11,8 @@ public class ParseObject {
 	   * A collection of URLs parsed from the page by the PageRetriver.
 	   */
 	  private Elements links;
+	  
+	  private long parseTime;
 
 	  /**
 	   * 	A collection of words parsed from the page by the PageRetriver.
@@ -42,4 +44,21 @@ public class ParseObject {
 	  public Collection<String> getWords() {
 		  return words;
 	  }
+	  
+	  /**
+	   * Sets the total parsing time for this page in nanoseconds.
+	   * @param time the parse time in nanoseconds.
+	   */
+	  public void setParseTime(long time) {
+		  parseTime = time;
+	  }
+	  
+	  /**
+	   * Gets the total parsing time for this page in nanoseconds.
+	   * @return the parse time in nanoseconds.
+	   */
+	  public long getParseTime() {
+		  return parseTime;
+	  }
+	  
 }
