@@ -32,7 +32,7 @@ public class PageParser {
 	 */
 	public void parse(Page page) {
 		
-		long startTime = System.nanoTime();
+		long startTime = System.currentTimeMillis();
 
 		ArrayList<String> untokenizdWords = new ArrayList<String>();
 		
@@ -66,7 +66,7 @@ public class PageParser {
 		parseResults.add(currentParse);
 		
 		// saves total parse time into ParseObject
-		long endTime = System.nanoTime();
+		long endTime = System.currentTimeMillis();
 		long duration = endTime - startTime;
 		currentParse.setParseTime(duration);
 	}

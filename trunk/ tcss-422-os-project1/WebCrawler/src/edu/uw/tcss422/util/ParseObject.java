@@ -12,6 +12,9 @@ public class ParseObject {
 	   */
 	  private Elements links;
 	  
+	  /**
+	   * The total parsing time for this parse.
+	   */
 	  private long parseTime;
 
 	  /**
@@ -46,16 +49,16 @@ public class ParseObject {
 	  }
 	  
 	  /**
-	   * Sets the total parsing time for this page in nanoseconds.
-	   * @param time the parse time in nanoseconds.
+	   * Sets the total parsing time for this page in milliseconds.
+	   * @param time the parse time in milliseconds.
 	   */
 	  public void setParseTime(long time) {
 		  parseTime = time;
 	  }
 	  
 	  /**
-	   * Gets the total parsing time for this page in nanoseconds.
-	   * @return the parse time in nanoseconds.
+	   * Gets the total parsing time for this page in milliseconds.
+	   * @return the parse time in milliseconds.
 	   */
 	  public long getParseTime() {
 		  return parseTime;
