@@ -51,7 +51,7 @@ public class ParserTest {
             System.out.println("Enter the keyword you wish to search: ");
             String keyword = scan.nextLine();
             System.out.println("Page contains the word [" + keyword + "]: " + words.contains(keyword));
-            System.out.println("Total parsing time for this page was " + object.getParseTime() + " nanoseconds.");
+            System.out.println("Total parsing time for this page was " + object.getParseTime() + " milliseconds.");
         }
     
 	}
