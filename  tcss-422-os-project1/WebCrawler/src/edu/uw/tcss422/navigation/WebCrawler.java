@@ -13,8 +13,7 @@ import edu.uw.tcss422.util.ParseObject;
 public class WebCrawler {
 
 	/**
-	 * @param args
-	 *            Command line arguments passed by user
+	 * @param args Command line arguments passed by user
 	 */
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
