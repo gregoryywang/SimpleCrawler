@@ -99,19 +99,19 @@ public class PageParser {
 	 * Tokenizes the elements in the ArrayList into individual words where applicable, 
 	 * stores them back into the ArrayList 
 	 * @param source the ArrayList containing Strings to tokenize.
-	 * @return tolkenizedWords the tokenizedArrayList of strings.
+	 * @return tokenizedWords the tokenizedArrayList of strings.
 	 */
 	public Collection<String> stringTokenizer(ArrayList<String> source){
-		Collection<String> tolkenizedWords = new ArrayList<String>();
+		Collection<String> tokenizedWords = new ArrayList<String>();
 		for (Iterator<String> iterator = source.iterator(); iterator.hasNext();){
 			String current = iterator.next();
 			String[] tolken = current.split(" ");
 			for (String element : tolken) {
 				element = element.toLowerCase();
-				tolkenizedWords.add(element);
+				tokenizedWords.add(element);
 			}
 		}
-		return tolkenizedWords;
+		return tokenizedWords;
 	}
 	
 	

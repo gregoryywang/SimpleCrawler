@@ -1,6 +1,5 @@
 package edu.uw.tcss422.util;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,14 +21,14 @@ public class PageAnalyzer {
 	private int pagesAnalyzed = 0;
 	private int totalURLs = 0;
 	private long totalWords = 0;
-	private long totalKeywords = 0;
 	private long totalPageParseTime = 0;
 
-	public void analyze(Collection<ParseObject> parseObjColl) {
+	public void analyze(Collection<ParseObject> parseObjCol) {
 		pagesAnalyzed++;
 		String next;
 		ParseObject parsed = null;
-		Iterator<ParseObject> parserItr = parseObjColl.iterator();
+		Iterator<ParseObject> parserItr = parseObjCol.iterator();
+		
 		while (parserItr.hasNext()) {
 			parsed = parserItr.next();
 			countURLs(parsed.getLinks());
@@ -37,7 +36,7 @@ public class PageAnalyzer {
 			Iterator<String> keyItr = keywords.keySet().iterator();
 			while (keyItr.hasNext()) {
 				next = keyItr.next();
-				keywords.put(next, findKeywordCount(next.toLowerCase(), parsed.getWords()));
+				keywords.put(next, findKeywordCount(keywords.get(next), next.toLowerCase(), parsed.getWords()));
 			}
 			addParseTime(parsed.getParseTime());
 		}
@@ -51,7 +50,7 @@ public class PageAnalyzer {
 		sb.append("\nAverage words per page: ");
 		sb.append(totalWords / pagesAnalyzed);
 		sb.append("\nAverage keywords per page: ");
-		sb.append(totalKeywords / pagesAnalyzed);
+		sb.append(getTotalKeywords());
 		sb.append("\nAverage URLs per page: ");
 		sb.append(totalURLs / pagesAnalyzed);
 		sb.append("\n\nKeywords\tAvg. hits per page\t    Total hits\n");
@@ -71,7 +70,7 @@ public class PageAnalyzer {
 		
 		sb.append("\nAverage parse time per page: ");
 		sb.append(totalPageParseTime / pagesAnalyzed);
-		sb.append(" ms\n");
+		sb.append(" ms");
 		
 		return sb.toString();
 	}
@@ -84,31 +83,22 @@ public class PageAnalyzer {
 		totalURLs += urls.size();
 	}
 	
-//	private void countURLs(String str) {
-//		String findStr = "href";
-//		int count = 0;
-//		int lastIndex = 0;
-//		while (lastIndex != -1) {
-//
-//			lastIndex = str.indexOf(findStr, lastIndex);
-//
-//			if (lastIndex != -1) {
-//				count++;
-//				lastIndex += findStr.length();
-//			}
-//		}
-//		totalURLs += count;
-//	}
-	
 	private void countWords(Collection<String> collection) {
 		totalWords += collection.size();
 	}
 	
-	private int findKeywordCount(String keyword, Collection<String> collection) {
-		int count = Collections.frequency(collection, keyword);
-		
-		totalKeywords += count;
-		return count;
+	private int getTotalKeywords() {
+		int totalKeywords = 0;
+		Iterator<String> itr = keywords.keySet().iterator();
+		while (itr.hasNext()) {
+			totalKeywords += keywords.get(itr.next());
+		}
+		return totalKeywords;
+	}
+	
+	private int findKeywordCount(Integer currentCount, String keyword, Collection<String> collection) {
+		int newCount = currentCount + Collections.frequency(collection, keyword);
+		return newCount;
 	}
 
 }

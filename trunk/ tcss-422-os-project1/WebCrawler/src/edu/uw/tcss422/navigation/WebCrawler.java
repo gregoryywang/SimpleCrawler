@@ -18,19 +18,22 @@ public class WebCrawler {
 	 */
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
-		System.out.print("Please enter how many keywords: ");
+		System.out.print("Please enter how many keywords (max 10): ");
 		int numKeywords = scan.nextInt();
 		System.out.println("Please enter your desired keywords");
 		HashSet<String> keywords = new HashSet<String>();
-		for (int i = 0; i < numKeywords; i++) {
+		for (int i = 0; i < Math.min(10, numKeywords); i++) {
 			keywords.add(scan.next());
 		}
+		scan.close();
+		
+		long startTime = System.currentTimeMillis();
 
 		PageAnalyzer analyzer = new PageAnalyzer(keywords);
 
-		PageRetriever pageRetriever = new PageRetriever("http://www.facebook.com");
-//		pageRetriever.addURL("http://uw.edu");
-//		pageRetriever.addURL("http://en.wikipedia.org");
+		PageRetriever pageRetriever = new PageRetriever("http://amazon.com/");
+		pageRetriever.addURL("http://uw.edu");
+		pageRetriever.addURL("http://en.wikipedia.org");
 
 		PageParser parser = new PageParser(pageRetriever);
 		Page page;
@@ -40,16 +43,21 @@ public class WebCrawler {
 			page = pageRetriever.next();
 
 			if (page != null) {
-//				System.out.println(page.getURL());
+				 System.out.println(page.getURL());
 				parser.parse(page);
-				Collection<ParseObject> results = parser.getParseObjects();
-				
-				analyzer.analyze(results);
 			}
+			
+			Collection<ParseObject> results = parser.getParseObjects();
+			analyzer.analyze(results);
 
 		} while (pageRetriever.hasNext());
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - startTime;
+		
 		
 		System.out.println(analyzer.getSummary());
+		System.out.println("Total execution time: " + duration + " ms");
 	}
 
 }
