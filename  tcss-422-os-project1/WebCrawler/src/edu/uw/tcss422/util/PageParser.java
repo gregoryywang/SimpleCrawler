@@ -6,7 +6,7 @@ package edu.uw.tcss422.util;
  * Stores and returns all URLs and words found in the Document object.
  * 
  * @author yongyuwang
- * @version 01-26-2014
+ * @version 01-28-2014
  */
 
 import java.util.ArrayList;
@@ -27,6 +27,19 @@ public class PageParser {
 	private Collection<ParseObject> parseResults = new ArrayList<ParseObject>();
 	
 	/**
+	 * The PageRetriever object.
+	 */
+	private PageRetriever retrieve;
+	
+	/**
+	 * Constructor for PageParser.
+	 * @param retrieve the PageRetriever object
+	 */
+	public PageParser(PageRetriever retrieve) {
+		this.retrieve = retrieve;
+	}
+	
+	/**
 	 * Main parsing method using Page object as input.
 	 * @param docPage the Page object to parse
 	 */
@@ -35,13 +48,14 @@ public class PageParser {
 		long startTime = System.currentTimeMillis();
 
 		ArrayList<String> untokenizdWords = new ArrayList<String>();
-		
-		Elements links;
-		
+				
 		Document doc = Jsoup.parse(page.getContent());
 		
 		// Parse the document for URLs.
-		links = doc.select("a[href]");
+		Elements links = doc.select("a[href]");
+		
+		// Add these links back to the PageRetriever.
+		addLinks(links);
 
 		// Adds all words in the HTML body to collection of words.
 		untokenizdWords.add(doc.body().text());
@@ -71,6 +85,15 @@ public class PageParser {
 		currentParse.setParseTime(duration);
 	}
 	
+	/**
+	 * Loops over the list of links and pass the pack to PageRetriever.
+	 * @param links the list of links to pass back.
+	 */
+	public void addLinks(Elements links) {
+		for (Element link : links) {
+        	retrieve.addURL(link.attr("abs:href"));
+        }
+	}
 	
 	/**
 	 * Tokenizes the elements in the ArrayList into individual words where applicable, 
