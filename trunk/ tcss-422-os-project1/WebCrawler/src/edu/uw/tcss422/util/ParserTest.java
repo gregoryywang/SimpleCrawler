@@ -17,7 +17,8 @@ import org.jsoup.select.Elements;
 public class ParserTest {
 	public static void main(String[] args) throws IOException {
 	    
-		PageParser parser = new PageParser();
+		// note that the PageRetriever does not actually do anything here.
+		PageParser parser = new PageParser(new PageRetriever("www.google.com"));
 		
 		Scanner scan = new Scanner(System.in);
 		System.out.print("Enter the URL address of the site you wish to parse (enter 1 to cheat): ");
