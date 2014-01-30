@@ -31,7 +31,9 @@ public class PageRetrieverTest {
 		assertNull("The page retriever should not raise any error for retrieving without an empty string", pageretriever.next());
 		PageRetriever emptyRetriever = new PageRetriever("");
 		assertNull("The page retriever should not raise any error for retrieving without an empty string", emptyRetriever.next());
-
+		emptyRetriever.addURL("Something not a url");
+		emptyRetriever.retrieve();
+		assertNull("The page retriever should not raise any error for retrieving a string that is not an URL", emptyRetriever.next());
 	}
 
 }
