@@ -64,12 +64,13 @@ public class WebCrawler {
 			if (page != null) {
 //				 System.out.println(page.getURL());
 				parser.parse(page);
+				pageRetriever.retrieve();
 			}
 			
 			Collection<ParseObject> results = parser.getParseObjects();
 			analyzer.analyze(results);
 
-		} while (pageRetriever.hasNext() && analyzer.getPagesAnalyzed() <= maxPagesToParse);
+		} while (pageRetriever.hasNext() && analyzer.getPagesAnalyzed() < maxPagesToParse);
 
 		System.out.println(generateString(analyzer.getSummary()));
 	}
