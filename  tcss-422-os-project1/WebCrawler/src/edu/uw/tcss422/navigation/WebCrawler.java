@@ -17,6 +17,8 @@ public class WebCrawler {
 	 */
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
+		System.out.print("Enter the URL address of the site you wish to parse: ");
+		String url = scan.nextLine();
 		System.out.print("Please enter how many keywords (max 10): ");
 		int numKeywords = scan.nextInt();
 		System.out.println("Please enter your desired keywords");
@@ -30,9 +32,7 @@ public class WebCrawler {
 
 		PageAnalyzer analyzer = new PageAnalyzer(keywords);
 
-		PageRetriever pageRetriever = new PageRetriever("http://amazon.com/");
-		pageRetriever.addURL("http://uw.edu");
-		pageRetriever.addURL("http://en.wikipedia.org");
+		PageRetriever pageRetriever = new PageRetriever(url);
 
 		PageParser parser = new PageParser(pageRetriever);
 		Page page;
@@ -42,7 +42,7 @@ public class WebCrawler {
 			page = pageRetriever.next();
 
 			if (page != null) {
-				 System.out.println(page.getURL());
+//				 System.out.println(page.getURL());
 				parser.parse(page);
 			}
 			
