@@ -27,7 +27,7 @@ public class ParserTest {
 			url = "http://www.aol.com";
 		}
 		
-        Document doc = Jsoup.connect(url).get();
+        Document doc = Jsoup.connect(url).userAgent("Mozilla").get();
         
         
         // simulate work done in PageRetriver for a single page.

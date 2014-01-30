@@ -53,9 +53,6 @@ public class PageParser {
 		
 		// Parse the document for URLs.
 		Elements links = doc.select("a[href]");
-		
-		// Add these links back to the PageRetriever.
-		addLinks(links);
 
 		// Adds all words in the HTML body to collection of words.
 		untokenizdWords.add(doc.body().text());
@@ -63,10 +60,11 @@ public class PageParser {
 		// DEBUG
 		// System.out.println("Word list for this page: " + words);
 
-		// Add link texts to list of words
+		// Add link texts to list of words and back into PageRetriever
 		for (Element link : links) {
 			untokenizdWords.add(link.text());
-
+        	retrieve.addURL(link.attr("abs:href"));
+        	
 			//DEBUG
 			//System.out.println(link.text());
 		}
@@ -85,15 +83,6 @@ public class PageParser {
 		currentParse.setParseTime(duration);
 	}
 	
-	/**
-	 * Loops over the list of links and pass the pack to PageRetriever.
-	 * @param links the list of links to pass back.
-	 */
-	public void addLinks(Elements links) {
-		for (Element link : links) {
-        	retrieve.addURL(link.attr("abs:href"));
-        }
-	}
 	
 	/**
 	 * Tokenizes the elements in the ArrayList into individual words where applicable, 
