@@ -49,12 +49,14 @@ public class PageRetriever {
       if(!url.isEmpty() && !mPageRepos.containsKey(url)) { 
         try {
           //Connect to page and create page object
-          Document doc = Jsoup.connect(url).get();
+          Document doc = Jsoup.connect(url).userAgent("Mozilla").get();
           String content = doc.html();
           Page page = new Page(url, content);
           mAvailPages.add(page); //add retrieved page to avail queue
           mPageRepos.put(url, page); //add page to repos
-        } catch( IOException e ) {}
+        } catch( IOException e ) {
+        	System.err.println(e.toString());
+        }
       }
     }
   }
