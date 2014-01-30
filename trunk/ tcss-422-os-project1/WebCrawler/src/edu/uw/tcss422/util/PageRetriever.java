@@ -45,13 +45,8 @@ public class PageRetriever {
     while( !mPendingLinks.isEmpty() ) {
       final String url = mPendingLinks.remove(); //Get next url
       
-      if( url == null || url.isEmpty())
-        return;
-      
       //Check the repository first. If the Page has been retrieved before, return it; else retrieve the page and store for future.
-      if( mPageRepos.containsKey(url))
-        mAvailPages.add(mPageRepos.get(url));
-      else { 
+      if(!url.isEmpty() && !mPageRepos.containsKey(url)) { 
         try {
           //Connect to page and create page object
           Document doc = Jsoup.connect(url).get();
