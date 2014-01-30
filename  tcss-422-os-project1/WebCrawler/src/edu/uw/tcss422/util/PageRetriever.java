@@ -20,13 +20,15 @@ public class PageRetriever {
   
   
   public PageRetriever(String aURL) {
-    //Add initial link to queue to retrieve
-    mPendingLinks.add(aURL);
+    if(!aURL.isEmpty())
+      //Add initial link to queue to retrieve
+      mPendingLinks.add(aURL);
   }
   
   public void addURL(String aURL) {
     //Add additional link to queue to retrieve
-    mPendingLinks.add(aURL);
+   if(!aURL.isEmpty()) //No null urls
+     mPendingLinks.add(aURL);
   }
   
   public boolean hasNext() {
