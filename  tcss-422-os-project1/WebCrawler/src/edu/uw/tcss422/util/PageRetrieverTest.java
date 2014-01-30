@@ -29,6 +29,9 @@ public class PageRetrieverTest {
 		pageretriever.addURL("");
 		pageretriever.retrieve();
 		assertNull("The page retriever should not raise any error for retrieving without an empty string", pageretriever.next());
+		PageRetriever emptyRetriever = new PageRetriever("");
+		assertNull("The page retriever should not raise any error for retrieving without an empty string", emptyRetriever.next());
+
 	}
 
 }
