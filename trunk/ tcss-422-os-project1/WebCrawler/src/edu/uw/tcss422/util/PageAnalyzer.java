@@ -19,23 +19,19 @@ public class PageAnalyzer {
 		for (String word : words) {
 			keywords.put(word, 0);
 		}
-//		for (int i = 0; i < words.size(); i++) {
-//			keywords.put(words.toArray()[i].toString(), 0);
-//		}
+		sum.setKeywords(keywords);
 	}
 	
 	private HashMap<String, Integer> keywords = new HashMap<String, Integer>();
-	private int pagesAnalyzed = 0;
-	private int totalURLs = 0;
-	private long totalWords = 0;
-	private long totalPageParseTime = 0;
+	SummaryObject sum = new SummaryObject();
+	
 
 	/**
 	 * Analyzes the incoming parseObjects.
 	 * @param parseObjCol The collection of parseObjects
 	 */
 	public void analyze(Collection<ParseObject> parseObjCol) {
-		pagesAnalyzed++;
+		sum.incrementPageCounter();
 		String next;
 		ParseObject parsed;
 		Iterator<ParseObject> parserItr = parseObjCol.iterator();
@@ -53,41 +49,13 @@ public class PageAnalyzer {
 		}
 		
 	}
-	
+
 	/**
-	 * Builds the output string.
-	 * @return Output string
+	 * 
+	 * @return
 	 */
-	public String getSummary() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("\nPages retrieved: ");
-		sb.append(pagesAnalyzed);
-		sb.append("\nAverage words per page: ");
-		sb.append(totalWords / pagesAnalyzed);
-		sb.append("\nAverage keywords per page: ");
-		sb.append(getTotalKeywords());
-		sb.append("\nAverage URLs per page: ");
-		sb.append(totalURLs / pagesAnalyzed);
-		sb.append("\n\nKeywords\tAvg. hits per page\t    Total hits\n");
-		
-		Iterator<String> keyItr = keywords.keySet().iterator();
-		String next;
-		while (keyItr.hasNext()) {
-			next = keyItr.next();
-			if (next.length() >= 8) {
-				sb.append(next + "\t\t" + String.format("%.2f", (double) keywords.get(next) / pagesAnalyzed)
-						+ "\t\t\t" + keywords.get(next) + "\n");
-			} else {
-				sb.append(next + "\t\t\t" + String.format("%.2f", (double) keywords.get(next) / pagesAnalyzed)
-					+ "\t\t\t" + keywords.get(next) + "\n");
-			}
-		}
-		
-		sb.append("\nAverage parse time per page: ");
-		sb.append(totalPageParseTime / pagesAnalyzed);
-		sb.append(" ms");
-		
-		return sb.toString();
+	public SummaryObject getSummary() {
+		return sum;
 	}
 	
 	/**
@@ -95,7 +63,7 @@ public class PageAnalyzer {
 	 * @param parseTime Amount of time taken to parse a single ParseObject
 	 */
 	private void addParseTime(long parseTime) {
-		totalPageParseTime += parseTime;
+		sum.setTotalPageParseTime(sum.getTotalPageParseTime() + parseTime);
 	}
 	
 	/**
@@ -103,7 +71,7 @@ public class PageAnalyzer {
 	 * @param urls The collection of URLs found in a single ParseObject
 	 */
 	private void countURLs(Elements urls) {
-		totalURLs += urls.size();
+		sum.setTotalURLs(sum.getTotalURLs() + urls.size());
 	}
 	
 	/**
@@ -111,20 +79,7 @@ public class PageAnalyzer {
 	 * @param collection The collection of strings in a single ParseObject
 	 */
 	private void countWords(Collection<String> collection) {
-		totalWords += collection.size();
-	}
-	
-	/**
-	 * Finds the total number of keywords found in all pages parsed.
-	 * @return The total number of keywords found
-	 */
-	private int getTotalKeywords() {
-		int totalKeywords = 0;
-		Iterator<String> itr = keywords.keySet().iterator();
-		while (itr.hasNext()) {
-			totalKeywords += keywords.get(itr.next());
-		}
-		return totalKeywords;
+		sum.setTotalWords(sum.getTotalWords() + collection.size());
 	}
 	
 	/**
@@ -144,7 +99,7 @@ public class PageAnalyzer {
 	 * @return The number of pages analyzed so far.
 	 */
 	public int getPagesAnalyzed() {
-		return pagesAnalyzed;
+		return sum.getPagesAnalyzed();
 	}
 
 }
