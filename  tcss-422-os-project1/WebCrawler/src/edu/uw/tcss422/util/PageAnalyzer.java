@@ -16,9 +16,12 @@ import org.jsoup.select.Elements;
 public class PageAnalyzer {
 	
 	public PageAnalyzer(HashSet<String> words) {
-		for (int i = 0; i < words.size(); i++) {
-			keywords.put(words.toArray()[i].toString(), 0);
+		for (String word : words) {
+			keywords.put(word, 0);
 		}
+//		for (int i = 0; i < words.size(); i++) {
+//			keywords.put(words.toArray()[i].toString(), 0);
+//		}
 	}
 	
 	private HashMap<String, Integer> keywords = new HashMap<String, Integer>();
@@ -134,6 +137,14 @@ public class PageAnalyzer {
 	private int findKeywordCount(Integer currentCount, String keyword, Collection<String> collection) {
 		int newCount = currentCount + Collections.frequency(collection, keyword);
 		return newCount;
+	}
+
+	/**
+	 * Finds the number of pages analyzed for limiting purposes.
+	 * @return The number of pages analyzed so far.
+	 */
+	public int getPagesAnalyzed() {
+		return pagesAnalyzed;
 	}
 
 }

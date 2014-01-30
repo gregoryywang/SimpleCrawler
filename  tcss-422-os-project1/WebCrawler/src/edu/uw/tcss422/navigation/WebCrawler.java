@@ -19,14 +19,17 @@ public class WebCrawler {
 		Scanner scan = new Scanner(System.in);
 		System.out.print("Enter the URL address of the site you wish to parse: ");
 		String url = scan.nextLine();
+		System.out.print("Enter the max number of webpages you would like to parse: ");
+		int maxPagesToParse = scan.nextInt();
 		System.out.print("Please enter how many keywords (max 10): ");
 		int numKeywords = scan.nextInt();
-		System.out.println("Please enter your desired keywords");
+		System.out.println("Please enter your desired keywords:");
 		HashSet<String> keywords = new HashSet<String>();
 		for (int i = 0; i < Math.min(10, numKeywords); i++) {
 			keywords.add(scan.next());
 		}
 		scan.close();
+		System.out.println("Webcrawler running...");
 		
 		long startTime = System.currentTimeMillis();
 
@@ -49,7 +52,7 @@ public class WebCrawler {
 			Collection<ParseObject> results = parser.getParseObjects();
 			analyzer.analyze(results);
 
-		} while (pageRetriever.hasNext());
+		} while (pageRetriever.hasNext() && analyzer.getPagesAnalyzed() <= maxPagesToParse);
 
 		long endTime = System.currentTimeMillis();
 		long duration = endTime - startTime;
@@ -58,5 +61,4 @@ public class WebCrawler {
 		System.out.println(analyzer.getSummary());
 		System.out.println("Total execution time: " + duration + " ms");
 	}
-
 }
