@@ -26,6 +26,9 @@ public class PageRetrieverTest {
 		assertNull("The page retriever should not retrieve duplicated urls", pageretriever.next());
 		pageretriever.retrieve();
 		assertNull("The page retriever should not raise any error for retrieving without an URL", pageretriever.next());
+		pageretriever.addURL("");
+		pageretriever.retrieve();
+		assertNull("The page retriever should not raise any error for retrieving without an empty string", pageretriever.next());
 	}
 
 }
