@@ -57,7 +57,7 @@ public class PageRetriever {
           mAvailPages.add(page); //add retrieved page to avail queue
           mPageRepos.put(url, page); //add page to repos
         } catch( IOException e ) {
-        	System.err.println(e.toString());
+        	//System.err.println(e.toString()); Only use for debugging
         }
       }
     }
