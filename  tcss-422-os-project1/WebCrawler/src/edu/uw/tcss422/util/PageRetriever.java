@@ -7,42 +7,73 @@ import java.util.HashMap;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-public class PageRetriever {
+/**
+ * PageRetriever retrieves html documents and generates Page objects.
+ * @author Roshun Jones
+ * @version 1.0
+ *
+ */
+public class PageRetriever extends Thread {
  
-  //Create collections to store pending links
+  /**
+   * @param mPendingLinks collection to store pending links
+   */
   private ArrayDeque<String> mPendingLinks = new ArrayDeque<String>();
   
-  //Create collections to store retrieved pages
+  /**
+   * @param mAvailPags collection to store retrieved pages.
+   */
   private ArrayDeque<Page> mAvailPages = new ArrayDeque<Page>();
   
-  //Page repository
+  /**
+   * @param mPageRepos repository for storing retrieved pages.
+   */
   private HashMap<String, Page> mPageRepos = new HashMap<String, Page>();
   
   
+  /**
+   * Single arg constructor.
+   * @param aURL initial url to retrieve. 
+   */
   public PageRetriever(String aURL) {
     if(!aURL.isEmpty())
       //Add initial link to queue to retrieve
       mPendingLinks.add(aURL);
   }
   
-  public void addURL(String aURL) {
+  /**
+   * Adds a url to the pending list to be retrieved.
+   * @param aURL The URL to add to the pending list.
+   */
+  public synchronized void addURL(String aURL) {
     //Add additional link to queue to retrieve
    if(!aURL.isEmpty()) //No null urls
      mPendingLinks.add(aURL);
-  }
+  } //End addURL()
   
-  public boolean hasNext() {
+  /**
+   * Returns true if there are retrieved pages available.
+   * @return true if there are retrieved pages available, false otherwise.
+   */
+  public synchronized boolean hasNext() {
     return !mAvailPages.isEmpty();
-  }
+  } //End hasNext()
   
-  public Page next() {
+  /**
+   * Retruns the next available retrieved Page object.
+   * @return the next available retrieved Page object.
+   */
+  public synchronized Page next() {
     if( !mAvailPages.isEmpty() ) 
       return mAvailPages.remove();
     
     return null; 
-  }
+  } //End next()
   
-  public void retrieve() {
+  /**
+   * Retrieves HTML content and generates Page objects of all URLS in pending queue.
+   */
+  public synchronized void retrieve() {
     
     while( !mPendingLinks.isEmpty() ) {
       final String url = mPendingLinks.remove(); //Get next url
@@ -61,5 +92,22 @@ public class PageRetriever {
         }
       }
     }
+  }// End retrieve()
+  
+  /**
+   * Checks whether links queue is empty.
+   */
+  private synchronized boolean linksQueueIsEmpty() {
+    return mPendingLinks.isEmpty();
   }
+  
+  /**
+   * Main loop for PageRetriever loop.
+   */
+  public void run() {
+    while( true ) {
+      if( !linksQueueIsEmpty() )
+          retrieve(); //
+    }
+  }//End run()
 }
