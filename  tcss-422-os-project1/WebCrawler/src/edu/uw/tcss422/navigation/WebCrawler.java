@@ -54,7 +54,7 @@ public class WebCrawler {
 
 		PageRetriever pageRetriever = new PageRetriever(url);
 
-		PageParser parser = new PageParser(pageRetriever);
+		PageParser parser = new PageParser(pageRetriever, maxPagesToParse);
 		Page page;
 
 		do {
@@ -70,7 +70,7 @@ public class WebCrawler {
 			Collection<ParseObject> results = parser.getParseObjects();
 			analyzer.analyze(results);
 
-		} while (pageRetriever.hasNext() && analyzer.getPagesAnalyzed() < maxPagesToParse);
+		} while (pageRetriever.hasNext());// && analyzer.getPagesAnalyzed() < maxPagesToParse);
 
 		System.out.println(generateString(analyzer.getSummary()));
 	}
@@ -82,7 +82,7 @@ public class WebCrawler {
 
 	private static String generateString(SummaryObject summary) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("\nPages retrieved: ");
+		sb.append("\nUnique pages retrieved: ");
 		sb.append(summary.getPagesAnalyzed());
 		sb.append("\nAverage words per page: ");
 		sb.append(summary.getTotalWords() / summary.getPagesAnalyzed());
@@ -94,17 +94,22 @@ public class WebCrawler {
 		
 		Iterator<String> keyItr = summary.getKeywords().keySet().iterator();
 		String next;
+		double num;
 		while (keyItr.hasNext()) {
 			next = keyItr.next();
 			if (next.length() >= 8) {
-				sb.append(next + "\t\t" + String.format("%.2f",
-					(double) summary.getKeywords().get(next) / summary.getPagesAnalyzed())
-					+ "\t\t\t" + summary.getKeywords().get(next) + "\n");
+				sb.append(next + "\t\t");
 			} else {
-				sb.append(next + "\t\t\t" + String.format("%.2f",
-					(double) summary.getKeywords().get(next) / summary.getPagesAnalyzed())
-					+ "\t\t\t" + summary.getKeywords().get(next) + "\n");
+				sb.append(next + "\t\t\t");
 			}
+			
+			num = summary.getKeywords().get(next) / summary.getPagesAnalyzed();
+			if(num == (int) num)
+		        sb.append(String.format("%d", (int) num));
+		    else
+		        sb.append( String.format("%s", num));
+			
+			sb.append("\t\t\t" + summary.getKeywords().get(next) + "\n");
 		}
 		
 		sb.append("\nAverage parse time per page: ");
