@@ -49,7 +49,8 @@ public class PageParser {
 
 		ArrayList<String> untokenizdWords = new ArrayList<String>();
 				
-		Document doc = Jsoup.parse(page.getContent());
+		Document doc = Jsoup.parse(page.getContent(), page.getURL());
+		
 		
 		// Parse the document for URLs.
 		Elements links = doc.select("a[href]");
