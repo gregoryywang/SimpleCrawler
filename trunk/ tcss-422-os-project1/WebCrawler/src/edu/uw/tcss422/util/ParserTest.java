@@ -16,9 +16,6 @@ import org.jsoup.select.Elements;
 
 public class ParserTest {
 	public static void main(String[] args) throws IOException {
-	    
-		// note that the PageRetriever does not actually do anything here.
-		PageParser parser = new PageParser(new PageRetriever("www.google.com"));
 		
 		Scanner scan = new Scanner(System.in);
 		System.out.print("Enter the URL address of the site you wish to parse (enter 1 to cheat): ");
@@ -26,6 +23,11 @@ public class ParserTest {
 		if (url.equals("1")) {
 			url = "http://www.aol.com";
 		}
+		System.out.print("Enter the number of pages to parse: [This does not work btw] ");
+		int maxParse = scan.nextInt();
+		
+		// note that the PageRetriever does not actually do anything here.
+		PageParser parser = new PageParser(new PageRetriever(""), maxParse);
 		
         Document doc = Jsoup.connect(url).userAgent("Mozilla").get();
         
