@@ -76,8 +76,27 @@ public class WebCrawler {
 	}
 
 	private static void multi(int maxPagesToParse, String url, HashSet<String> keywords) {
-		// TODO Auto-generated method stub
-		
+		//Create Page Retriever thread and start
+	  PageRetriever pageRetriever = new PageRetriever(url);
+	  pageRetriever.start();
+	  
+	  PageAnalyzer analyzer = new PageAnalyzer(keywords);
+    PageParser parser = new PageParser(pageRetriever, maxPagesToParse);
+    Page page;
+	  
+	  
+	    try {
+        Thread.sleep(3000); //Temp sleep to give thread time to work
+      } catch (InterruptedException e) {}	
+	    
+	    page = pageRetriever.next();
+	    
+	    if( page != null) {
+	      parser.parse(page);
+	      Collection<ParseObject> results = parser.getParseObjects();
+	      analyzer.analyze(results);
+	      System.out.println(generateString(analyzer.getSummary()));
+	    }
 	}
 
 	private static String generateString(SummaryObject summary) {
