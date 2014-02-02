@@ -87,7 +87,7 @@ public class PageRetriever extends Thread {
    */
   public synchronized void retrieve() {
     
-    while( !mPendingLinks.isEmpty() && (mRetrievedCount <= mMaxPages) ) {
+    while( !mPendingLinks.isEmpty() && (mRetrievedCount < mMaxPages) ) {
       final String url = mPendingLinks.remove(); //Get next url
       
       //Check the repository first. If the Page has been retrieved before, return it; else retrieve the page and store for future.
