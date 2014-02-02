@@ -58,7 +58,7 @@ public class WebCrawler {
 		sum.setKeywords(keywords);
 		PageAnalyzer analyzer = new PageAnalyzer();
 
-		PageRetriever pageRetriever = new PageRetriever(url);
+		PageRetriever pageRetriever = new PageRetriever(url, maxPagesToParse);
 
 		PageParser parser = new PageParser(pageRetriever, maxPagesToParse);
 		Page page;
@@ -86,12 +86,26 @@ public class WebCrawler {
 		pageAnalyzer.start();
 		
 		//Create Page Retriever thread and start
-		  PageRetriever pageRetriever = new PageRetriever(url);
-		  pageRetriever.start();
-
-		PageParser parser = new PageParser(pageRetriever, maxPagesToParse);
-		Page page;
-		
+	  PageRetriever pageRetriever = new PageRetriever(url, maxPagesToParse);
+	  pageRetriever.start();
+	  
+	  PageAnalyzer analyzer = new PageAnalyzer();
+    PageParser parser = new PageParser(pageRetriever, maxPagesToParse);
+    Page page;
+	  
+	    try {
+        Thread.sleep(3000); //Temp sleep to give thread time to work
+      } catch (InterruptedException e) {}	
+	    
+	    page = pageRetriever.next();
+	    
+	    if( page != null) {
+	      parser.parse(page);
+	      Collection<ParseObject> results = parser.getParseObjects();
+	      analyzer.analyze();
+	      System.out.println(generateString(analyzer.getSummary()));
+	    }
+		  
 		try {
 	        Thread.sleep(3000); //Temp sleep to give thread time to work
 	      } catch (InterruptedException e) {}
