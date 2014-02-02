@@ -101,10 +101,15 @@ public class PageAnalyzer extends Thread{
 
 	@Override
 	public void run() {
+		while (WebCrawler.parseObjects == null) {
+			try {
+				sleep(1000);	//Wait for parseObjects to be populated.
+			} catch (InterruptedException e) {}
+		}
 		while (!WebCrawler.parseObjects.isEmpty()) {
 			analyze();
 			try {
-				sleep(100);
+				sleep(1000);
 			} catch (InterruptedException e) {}
 		}
 	}
