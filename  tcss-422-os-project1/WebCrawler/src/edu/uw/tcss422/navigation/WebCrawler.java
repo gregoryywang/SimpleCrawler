@@ -92,19 +92,6 @@ public class WebCrawler {
 	  PageAnalyzer analyzer = new PageAnalyzer();
     PageParser parser = new PageParser(pageRetriever, maxPagesToParse);
     Page page;
-	  
-	    try {
-        Thread.sleep(3000); //Temp sleep to give thread time to work
-      } catch (InterruptedException e) {}	
-	    
-	    page = pageRetriever.next();
-	    
-	    if( page != null) {
-	      parser.parse(page);
-	      Collection<ParseObject> results = parser.getParseObjects();
-	      analyzer.analyze();
-	      System.out.println(generateString(analyzer.getSummary()));
-	    }
 		  
 		try {
 	        Thread.sleep(3000); //Temp sleep to give thread time to work
