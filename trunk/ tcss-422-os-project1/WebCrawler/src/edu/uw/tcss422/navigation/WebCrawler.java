@@ -132,6 +132,10 @@ public class WebCrawler {
 //		} catch (InterruptedException e) {}
 		
 		System.out.println(generateString(sum));
+		
+		//Stop threads
+		pageRetriever.terminate();
+		pageAnalyzer.terminate();
 	}
 
 	/**
