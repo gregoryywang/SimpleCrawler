@@ -1,6 +1,7 @@
 package edu.uw.tcss422.navigation;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,7 +18,7 @@ public class WebCrawler {
 	
 	public static volatile SummaryObject sum = new SummaryObject();
 	
-	public static volatile Collection<ParseObject> parseObjects;
+	private static volatile Collection<ParseObject> parseObjects = new ArrayList<ParseObject>();
 
 	/**
 	 * @param args Command line arguments passed by user
@@ -74,7 +75,7 @@ public class WebCrawler {
 
 		} while (pageRetriever.hasNext());
 			
-		parseObjects = parser.getParseObjects();
+		setParseObjects(parser.getParseObjects());
 		analyzer.analyze();
 
 		System.out.println(generateString(sum));
@@ -82,33 +83,37 @@ public class WebCrawler {
 
 	private static void multi(int maxPagesToParse, String url, HashSet<String> keywords) {
 		sum.setKeywords(keywords);
-		Thread pageAnalyzer = new Thread(new PageAnalyzer());
+		PageAnalyzer pageAnalyzer = new PageAnalyzer();
 		pageAnalyzer.start();
 		
 		//Create Page Retriever thread and start
-	  PageRetriever pageRetriever = new PageRetriever(url, maxPagesToParse);
-	  pageRetriever.start();
-	  
-	  PageAnalyzer analyzer = new PageAnalyzer();
-    PageParser parser = new PageParser(pageRetriever);
-    Page page;
+		PageRetriever pageRetriever = new PageRetriever(url, maxPagesToParse);
+		pageRetriever.start();
+
+		PageParser parser = new PageParser(pageRetriever);
+		Page page;
 		  
 		try {
 	        Thread.sleep(3000); //Temp sleep to give thread time to work
 	      } catch (InterruptedException e) {}
 		
 		page = pageRetriever.next();
-		
-		if( page != null) {
-		      parser.parse(page);
-		}
+
+		do {
+			if (page != null) {
+				parser.parse(page);
+				page = pageRetriever.next();
+			}
+		} while (pageRetriever.hasNext());
 			
-		parseObjects = parser.getParseObjects();
-		
+		setParseObjects(parser.getParseObjects());
 		
 		try {
-			pageAnalyzer.join();
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {}
+//		try {
+//			pageAnalyzer.join();
+//		} catch (InterruptedException e) {}
 		
 		System.out.println(generateString(sum));
 	}
@@ -148,5 +153,19 @@ public class WebCrawler {
 		sb.append(" ms");
 		
 		return sb.toString();
+	}
+
+	/**
+	 * @return the parseObjects
+	 */
+	public static Collection<ParseObject> getParseObjects() {
+		return parseObjects;
+	}
+
+	/**
+	 * @param parseObjects the parseObjects to set
+	 */
+	public static void setParseObjects(Collection<ParseObject> parseObjects) {
+		WebCrawler.parseObjects = parseObjects;
 	}
 }
