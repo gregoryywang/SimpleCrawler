@@ -16,8 +16,12 @@ import edu.uw.tcss422.util.SummaryObject;
 
 public class WebCrawler {
 	
+	//Need to move to PageAnalyzer
 	public static volatile SummaryObject sum = new SummaryObject();
 	
+	/**
+	 * Collection of ParseObjects before they have been analyzed.
+	 */
 	private static volatile Collection<ParseObject> parseObjects = new ArrayList<ParseObject>();
 
 	/**
@@ -55,6 +59,12 @@ public class WebCrawler {
 		System.out.println("Total execution time: " + duration + " ms");
 	}
 
+	/**
+	 * Single-threaded implementation.
+	 * @param maxPagesToParse max number of pages to parse before breaking out
+	 * @param url starting url
+	 * @param keywords HashSet containing the user-specified keywords to search for
+	 */
 	private static void single(int maxPagesToParse, String url, HashSet<String> keywords) {
 		sum.setKeywords(keywords);
 		PageAnalyzer analyzer = new PageAnalyzer();
@@ -81,6 +91,12 @@ public class WebCrawler {
 		System.out.println(generateString(sum));
 	}
 
+	/**
+	 * Multi-threaded implementation.
+	 * @param maxPagesToParse max number of pages to parse before breaking out
+	 * @param url starting url
+	 * @param keywords HashSet containing the user-specified keywords to search for
+	 */
 	private static void multi(int maxPagesToParse, String url, HashSet<String> keywords) {
 		sum.setKeywords(keywords);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer();
@@ -118,6 +134,11 @@ public class WebCrawler {
 		System.out.println(generateString(sum));
 	}
 
+	/**
+	 * Takes the SummaryObject and formats everything nicely
+	 * @param summary SummaryObject containing stats
+	 * @return Nicely formatted string with all stats
+	 */
 	private static String generateString(SummaryObject summary) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\nUnique pages retrieved: ");
