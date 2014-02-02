@@ -27,7 +27,7 @@ public class ParserTest {
 		int maxParse = scan.nextInt();
 		
 		// note that the PageRetriever does not actually do anything here.
-		PageParser parser = new PageParser(new PageRetriever(""), maxParse);
+		PageParser parser = new PageParser(new PageRetriever("",3), maxParse);
 		
         Document doc = Jsoup.connect(url).userAgent("Mozilla").get();
         

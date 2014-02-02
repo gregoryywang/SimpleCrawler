@@ -30,15 +30,27 @@ public class PageRetriever extends Thread {
    */
   private HashMap<String, Page> mPageRepos = new HashMap<String, Page>();
   
+  /**
+   * @param mMaxPages The maximum number of pages to be retrieved.
+   */
+  private int mMaxPages = 0;
+  
+  /**
+   * @param mRetrievedCount The current number of pages retrieved.
+   */
+  private int mRetrievedCount = 0;
+  
   
   /**
    * Single arg constructor.
    * @param aURL initial url to retrieve. 
    */
-  public PageRetriever(String aURL) {
+  public PageRetriever(String aURL, int aMaxPages) {
     if(!aURL.isEmpty())
       //Add initial link to queue to retrieve
       mPendingLinks.add(aURL);
+    
+    mMaxPages = aMaxPages;
   }
   
   /**
@@ -75,7 +87,7 @@ public class PageRetriever extends Thread {
    */
   public synchronized void retrieve() {
     
-    while( !mPendingLinks.isEmpty() ) {
+    while( !mPendingLinks.isEmpty() && (mRetrievedCount <= mMaxPages) ) {
       final String url = mPendingLinks.remove(); //Get next url
       
       //Check the repository first. If the Page has been retrieved before, return it; else retrieve the page and store for future.
@@ -99,6 +111,22 @@ public class PageRetriever extends Thread {
    */
   private synchronized boolean linksQueueIsEmpty() {
     return mPendingLinks.isEmpty();
+  }
+  
+  /**
+   * Sets the max number of pages to retrieve.
+   * @param aMaxPages the max number of pages to retrieve.
+   */
+  public void setMax(int aMaxPages) {
+    mMaxPages = aMaxPages;
+  }
+  
+  /**
+   * Gets the current retrieved count.
+   * @return Returns the current retrieved page count.
+   */
+  public int getRetrievedCount() {
+    return mRetrievedCount;
   }
   
   /**
