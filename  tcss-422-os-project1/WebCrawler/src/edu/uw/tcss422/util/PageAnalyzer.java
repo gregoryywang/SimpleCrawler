@@ -2,48 +2,45 @@ package edu.uw.tcss422.util;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 
 import org.jsoup.select.Elements;
+
+import edu.uw.tcss422.navigation.WebCrawler;
 
 /**
  * Takes a collection of keywords and searches ParseObjects for those keywords.
  * Also keeps metrics on the pages search such as number of words and number
  * of URLs that can be displayed upon program completion.
  */
-public class PageAnalyzer {
+public class PageAnalyzer extends Thread{
 	
-	public PageAnalyzer(HashSet<String> words) {
-		for (String word : words) {
-			keywords.put(word, 0);
-		}
-		sum.setKeywords(keywords);
+	private SummaryObject sum;
+	
+	public PageAnalyzer() {
+		this.sum = WebCrawler.sum;
 	}
 	
-	private HashMap<String, Integer> keywords = new HashMap<String, Integer>();
-	SummaryObject sum = new SummaryObject();
-	
-
 	/**
 	 * Analyzes the incoming parseObjects.
 	 * @param parseObjCol The collection of parseObjects
 	 */
-	public void analyze(Collection<ParseObject> parseObjCol) {
-		sum.incrementPageCounter();
+	public void analyze() {
 		String next;
 		ParseObject parsed;
+		Collection<ParseObject> parseObjCol = WebCrawler.parseObjects;
 		Iterator<ParseObject> parserItr = parseObjCol.iterator();
 		
 		while (parserItr.hasNext()) {
+			sum.incrementPageCounter();
 			parsed = parserItr.next();
+			parserItr.remove();
 			countURLs(parsed.getLinks());
 			countWords(parsed.getWords());
-			Iterator<String> keyItr = keywords.keySet().iterator();
+			Iterator<String> keyItr = sum.getKeywords().keySet().iterator();
 			while (keyItr.hasNext()) {
 				next = keyItr.next();
-				keywords.put(next, findKeywordCount(keywords.get(next), next.toLowerCase(), parsed.getWords()));
+				sum.updateKeyword(next, findKeywordCount(sum.getKeywords().get(next), next.toLowerCase(), parsed.getWords()));
 			}
 			addParseTime(parsed.getParseTime());
 		}
@@ -54,7 +51,7 @@ public class PageAnalyzer {
 	 * 
 	 * @return
 	 */
-	public SummaryObject getSummary() {
+	public synchronized SummaryObject getSummary() {
 		return sum;
 	}
 	
@@ -62,7 +59,7 @@ public class PageAnalyzer {
 	 * Adds the parse time for each ParseObject to the total parse time.
 	 * @param parseTime Amount of time taken to parse a single ParseObject
 	 */
-	private void addParseTime(long parseTime) {
+	private synchronized void addParseTime(long parseTime) {
 		sum.setTotalPageParseTime(sum.getTotalPageParseTime() + parseTime);
 	}
 	
@@ -70,7 +67,7 @@ public class PageAnalyzer {
 	 * Adds the number of URLs in a single ParseObject to the running total. 
 	 * @param urls The collection of URLs found in a single ParseObject
 	 */
-	private void countURLs(Elements urls) {
+	private synchronized void countURLs(Elements urls) {
 		sum.setTotalURLs(sum.getTotalURLs() + urls.size());
 	}
 	
@@ -78,7 +75,7 @@ public class PageAnalyzer {
 	 * Counts the number of words in a single ParseObject and adds it to the running total.
 	 * @param collection The collection of strings in a single ParseObject
 	 */
-	private void countWords(Collection<String> collection) {
+	private synchronized void countWords(Collection<String> collection) {
 		sum.setTotalWords(sum.getTotalWords() + collection.size());
 	}
 	
@@ -89,7 +86,7 @@ public class PageAnalyzer {
 	 * @param collection The collection of tokenized strings for a single ParseObject
 	 * @return The number of times the keyword has been found (previous and current)
 	 */
-	private int findKeywordCount(Integer currentCount, String keyword, Collection<String> collection) {
+	private synchronized int findKeywordCount(Integer currentCount, String keyword, Collection<String> collection) {
 		int newCount = currentCount + Collections.frequency(collection, keyword);
 		return newCount;
 	}
@@ -98,8 +95,18 @@ public class PageAnalyzer {
 	 * Finds the number of pages analyzed for limiting purposes.
 	 * @return The number of pages analyzed so far.
 	 */
-	public int getPagesAnalyzed() {
+	public synchronized int getPagesAnalyzed() {
 		return sum.getPagesAnalyzed();
+	}
+
+	@Override
+	public void run() {
+		while (!WebCrawler.parseObjects.isEmpty()) {
+			analyze();
+			try {
+				sleep(100);
+			} catch (InterruptedException e) {}
+		}
 	}
 
 }

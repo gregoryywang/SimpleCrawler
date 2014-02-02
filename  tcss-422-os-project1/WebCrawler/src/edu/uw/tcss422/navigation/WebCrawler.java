@@ -1,5 +1,6 @@
 package edu.uw.tcss422.navigation;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,6 +14,10 @@ import edu.uw.tcss422.util.ParseObject;
 import edu.uw.tcss422.util.SummaryObject;
 
 public class WebCrawler {
+	
+	public static volatile SummaryObject sum = new SummaryObject();
+	
+	public static volatile Collection<ParseObject> parseObjects;
 
 	/**
 	 * @param args Command line arguments passed by user
@@ -50,7 +55,8 @@ public class WebCrawler {
 	}
 
 	private static void single(int maxPagesToParse, String url, HashSet<String> keywords) {
-		PageAnalyzer analyzer = new PageAnalyzer(keywords);
+		sum.setKeywords(keywords);
+		PageAnalyzer analyzer = new PageAnalyzer();
 
 		PageRetriever pageRetriever = new PageRetriever(url);
 
@@ -62,41 +68,49 @@ public class WebCrawler {
 			page = pageRetriever.next();
 
 			if (page != null) {
-//				 System.out.println(page.getURL());
 				parser.parse(page);
 				pageRetriever.retrieve();
 			}
+
+		} while (pageRetriever.hasNext());
 			
-			Collection<ParseObject> results = parser.getParseObjects();
-			analyzer.analyze(results);
+		parseObjects = parser.getParseObjects();
+		analyzer.analyze();
 
-		} while (pageRetriever.hasNext());// && analyzer.getPagesAnalyzed() < maxPagesToParse);
-
-		System.out.println(generateString(analyzer.getSummary()));
+		System.out.println(generateString(sum));
 	}
 
 	private static void multi(int maxPagesToParse, String url, HashSet<String> keywords) {
+		sum.setKeywords(keywords);
+		Thread pageAnalyzer = new Thread(new PageAnalyzer());
+		
 		//Create Page Retriever thread and start
-	  PageRetriever pageRetriever = new PageRetriever(url);
-	  pageRetriever.start();
-	  
-	  PageAnalyzer analyzer = new PageAnalyzer(keywords);
-    PageParser parser = new PageParser(pageRetriever, maxPagesToParse);
-    Page page;
-	  
-	  
-	    try {
-        Thread.sleep(3000); //Temp sleep to give thread time to work
-      } catch (InterruptedException e) {}	
-	    
-	    page = pageRetriever.next();
-	    
-	    if( page != null) {
-	      parser.parse(page);
-	      Collection<ParseObject> results = parser.getParseObjects();
-	      analyzer.analyze(results);
-	      System.out.println(generateString(analyzer.getSummary()));
-	    }
+		  PageRetriever pageRetriever = new PageRetriever(url);
+		  pageRetriever.start();
+
+		PageParser parser = new PageParser(pageRetriever, maxPagesToParse);
+		Page page;
+		
+		try {
+	        Thread.sleep(3000); //Temp sleep to give thread time to work
+	      } catch (InterruptedException e) {}
+		
+		page = pageRetriever.next();
+		
+		if( page != null) {
+		      parser.parse(page);
+		}
+			
+		parseObjects = parser.getParseObjects();
+		
+		pageAnalyzer.start();
+		
+		try {
+//			pageRetriever.join();
+			pageAnalyzer.join();
+		} catch (InterruptedException e) {}
+		
+		System.out.println(generateString(sum));
 	}
 
 	private static String generateString(SummaryObject summary) {
@@ -122,11 +136,9 @@ public class WebCrawler {
 				sb.append(next + "\t\t\t");
 			}
 			
-			num = summary.getKeywords().get(next) / summary.getPagesAnalyzed();
-			if(num == (int) num)
-		        sb.append(String.format("%d", (int) num));
-		    else
-		        sb.append( String.format("%s", num));
+			num = (double) summary.getKeywords().get(next) / summary.getPagesAnalyzed();
+			DecimalFormat df = new DecimalFormat("#.##");
+			sb.append(df.format(num));
 			
 			sb.append("\t\t\t" + summary.getKeywords().get(next) + "\n");
 		}
