@@ -28,7 +28,7 @@ public class PageAnalyzer extends Thread{
 	public void analyze() {
 		String next;
 		ParseObject parsed;
-		Collection<ParseObject> parseObjCol = WebCrawler.parseObjects;
+		Collection<ParseObject> parseObjCol = WebCrawler.getParseObjects();
 		Iterator<ParseObject> parserItr = parseObjCol.iterator();
 		
 		while (parserItr.hasNext()) {
@@ -101,16 +101,8 @@ public class PageAnalyzer extends Thread{
 
 	@Override
 	public void run() {
-		while (WebCrawler.parseObjects == null) {
-			try {
-				sleep(1000);	//Wait for parseObjects to be populated.
-			} catch (InterruptedException e) {}
-		}
-		while (!WebCrawler.parseObjects.isEmpty()) {
+		while (true) {
 			analyze();
-			try {
-				sleep(1000);
-			} catch (InterruptedException e) {}
 		}
 	}
 
