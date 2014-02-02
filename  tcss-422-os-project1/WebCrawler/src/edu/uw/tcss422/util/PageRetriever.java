@@ -33,7 +33,7 @@ public class PageRetriever extends Thread {
   /**
    * @param mMaxPages The maximum number of pages to be retrieved.
    */
-  private int mMaxPages = 0;
+  private final int mMaxPages;
   
   /**
    * @param mRetrievedCount The current number of pages retrieved.
@@ -99,6 +99,8 @@ public class PageRetriever extends Thread {
           Page page = new Page(url, content);
           mAvailPages.add(page); //add retrieved page to avail queue
           mPageRepos.put(url, page); //add page to repos
+          mRetrievedCount++;
+          
         } catch( IOException e ) {
         	//System.err.println(e.toString()); Only use for debugging
         }
@@ -111,14 +113,6 @@ public class PageRetriever extends Thread {
    */
   private synchronized boolean linksQueueIsEmpty() {
     return mPendingLinks.isEmpty();
-  }
-  
-  /**
-   * Sets the max number of pages to retrieve.
-   * @param aMaxPages the max number of pages to retrieve.
-   */
-  public void setMax(int aMaxPages) {
-    mMaxPages = aMaxPages;
   }
   
   /**
