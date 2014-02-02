@@ -16,9 +16,6 @@ import edu.uw.tcss422.util.SummaryObject;
 
 public class WebCrawler {
 	
-	//Need to move to PageAnalyzer
-	public static volatile SummaryObject sum = new SummaryObject();
-	
 	/**
 	 * Collection of ParseObjects before they have been analyzed.
 	 */
@@ -66,8 +63,8 @@ public class WebCrawler {
 	 * @param keywords HashSet containing the user-specified keywords to search for
 	 */
 	private static void single(int maxPagesToParse, String url, HashSet<String> keywords) {
-		sum.setKeywords(keywords);
-		PageAnalyzer analyzer = new PageAnalyzer();
+//		sum.setKeywords(keywords);
+		PageAnalyzer analyzer = new PageAnalyzer(keywords);
 
 		PageRetriever pageRetriever = new PageRetriever(url, maxPagesToParse);
 
@@ -88,6 +85,7 @@ public class WebCrawler {
 		setParseObjects(parser.getParseObjects());
 		analyzer.analyze();
 
+		SummaryObject sum = analyzer.getSummary();
 		System.out.println(generateString(sum));
 	}
 
@@ -98,8 +96,8 @@ public class WebCrawler {
 	 * @param keywords HashSet containing the user-specified keywords to search for
 	 */
 	private static void multi(int maxPagesToParse, String url, HashSet<String> keywords) {
-		sum.setKeywords(keywords);
-		PageAnalyzer pageAnalyzer = new PageAnalyzer();
+//		sum.setKeywords(keywords);
+		PageAnalyzer pageAnalyzer = new PageAnalyzer(keywords);
 		pageAnalyzer.start();
 		
 		//Create Page Retriever thread and start
@@ -125,12 +123,10 @@ public class WebCrawler {
 		setParseObjects(parser.getParseObjects());
 		
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {}
-//		try {
-//			pageAnalyzer.join();
-//		} catch (InterruptedException e) {}
 		
+		SummaryObject sum = pageAnalyzer.getSummary();
 		System.out.println(generateString(sum));
 		
 		//Stop threads

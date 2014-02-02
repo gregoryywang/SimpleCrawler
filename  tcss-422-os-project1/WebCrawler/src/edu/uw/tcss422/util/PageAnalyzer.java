@@ -2,6 +2,7 @@ package edu.uw.tcss422.util;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.jsoup.select.Elements;
@@ -15,15 +16,15 @@ import edu.uw.tcss422.navigation.WebCrawler;
  */
 public class PageAnalyzer extends Thread{
 	
-	private SummaryObject sum;
+	private static volatile SummaryObject sum = new SummaryObject();
 	
 	/**
    * mRunning Indicates whether the thread is running.
    */
   private volatile boolean mRunning = true;
 	
-	public PageAnalyzer() {
-		this.sum = WebCrawler.sum;
+	public PageAnalyzer(HashSet<String> keywords) {
+		sum.setKeywords(keywords);
 	}
 	
 	/**
