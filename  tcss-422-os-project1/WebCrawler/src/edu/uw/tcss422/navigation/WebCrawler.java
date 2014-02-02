@@ -83,6 +83,7 @@ public class WebCrawler {
 	private static void multi(int maxPagesToParse, String url, HashSet<String> keywords) {
 		sum.setKeywords(keywords);
 		Thread pageAnalyzer = new Thread(new PageAnalyzer());
+		pageAnalyzer.start();
 		
 		//Create Page Retriever thread and start
 		  PageRetriever pageRetriever = new PageRetriever(url);
@@ -103,10 +104,8 @@ public class WebCrawler {
 			
 		parseObjects = parser.getParseObjects();
 		
-		pageAnalyzer.start();
 		
 		try {
-//			pageRetriever.join();
 			pageAnalyzer.join();
 		} catch (InterruptedException e) {}
 		
