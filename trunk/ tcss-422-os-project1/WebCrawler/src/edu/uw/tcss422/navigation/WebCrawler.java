@@ -60,7 +60,7 @@ public class WebCrawler {
 
 		PageRetriever pageRetriever = new PageRetriever(url, maxPagesToParse);
 
-		PageParser parser = new PageParser(pageRetriever, maxPagesToParse);
+		PageParser parser = new PageParser(pageRetriever);
 		Page page;
 
 		do {
@@ -90,7 +90,7 @@ public class WebCrawler {
 	  pageRetriever.start();
 	  
 	  PageAnalyzer analyzer = new PageAnalyzer();
-    PageParser parser = new PageParser(pageRetriever, maxPagesToParse);
+    PageParser parser = new PageParser(pageRetriever);
     Page page;
 		  
 		try {

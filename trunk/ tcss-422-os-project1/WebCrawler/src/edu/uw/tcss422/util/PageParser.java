@@ -32,22 +32,11 @@ public class PageParser extends Thread {
 	private PageRetriever retrieve;
 	
 	/**
-	 * The max number of pages to parse.
-	 */
-	private int maxToParse;
-	
-	/**
-	 * Links to be parsed so far.
-	 */
-	private int parsed;
-	
-	/**
 	 * Constructor for PageParser.
 	 * @param retrieve the PageRetriever object
 	 */
-	public PageParser(PageRetriever retrieve, int maxToParse) {
+	public PageParser(PageRetriever retrieve) {
 		this.retrieve = retrieve;
-		this.maxToParse = maxToParse;
 	}
 	
 	/**
@@ -76,10 +65,7 @@ public class PageParser extends Thread {
 		// Add link texts to list of words and back into PageRetriever
 		for (Element link : links) {
 			untokenizdWords.add(link.text());
-			if (parsed < maxToParse) {
-				retrieve.addURL(link.attr("abs:href"));
-				parsed++;
-			}
+			retrieve.addURL(link.attr("abs:href"));
         	
 			//DEBUG
 			//System.out.println(link.text());
