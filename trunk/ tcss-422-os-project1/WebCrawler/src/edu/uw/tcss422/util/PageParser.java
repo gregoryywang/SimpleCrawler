@@ -25,12 +25,17 @@ public class PageParser extends Thread {
 	 * A collection of ParseObjects which stores the results for each parse for the PageAnalyzer.
 	 */
 	private Collection<ParseObject> parseResults = new ArrayList<ParseObject>();
-	
+
 	/**
 	 * The PageRetriever object.
 	 */
 	private PageRetriever retrieve;
-	
+
+	/**
+	 * mRunning Indicates whether the thread is running.
+	 */
+	private volatile boolean mRunning = true;
+
 	/**
 	 * Constructor for PageParser.
 	 * @param retrieve the PageRetriever object
@@ -38,6 +43,8 @@ public class PageParser extends Thread {
 	public PageParser(PageRetriever retrieve) {
 		this.retrieve = retrieve;
 	}
+	
+
 	
 	/**
 	 * Main parsing method using Page object as input.
@@ -104,6 +111,24 @@ public class PageParser extends Thread {
 		}
 		return tokenizedWords;
 	}
+	
+	 /**
+	   * Terminates the thread.
+	   */
+	  public void terminate() {
+	    mRunning = false;
+	  }
+	  
+	  /**
+	   * Lalala this doesn't work yet. 
+	   * And I'm begainning to think "implements runnable" is better.
+	   * Oh, and dubious design. 
+	   */
+	  public void run() {
+	    while( mRunning ) {
+	      getParseObjects();
+	    }
+	  }
 	
 	
 	/**

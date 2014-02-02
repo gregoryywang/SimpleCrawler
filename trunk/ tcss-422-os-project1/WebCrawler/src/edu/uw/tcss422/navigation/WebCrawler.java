@@ -136,6 +136,7 @@ public class WebCrawler {
 		//Stop threads
 		pageRetriever.terminate();
 		pageAnalyzer.terminate();
+		parser.terminate();
 	}
 
 	/**
