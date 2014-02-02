@@ -16,30 +16,34 @@ import org.jsoup.nodes.Document;
 public class PageRetriever extends Thread {
  
   /**
-   * @param mPendingLinks collection to store pending links
+   * mPendingLinks collection to store pending links
    */
   private ArrayDeque<String> mPendingLinks = new ArrayDeque<String>();
   
   /**
-   * @param mAvailPags collection to store retrieved pages.
+   * mAvailPags collection to store retrieved pages.
    */
   private ArrayDeque<Page> mAvailPages = new ArrayDeque<Page>();
   
   /**
-   * @param mPageRepos repository for storing retrieved pages.
+   * mPageRepos repository for storing retrieved pages.
    */
   private HashMap<String, Page> mPageRepos = new HashMap<String, Page>();
   
   /**
-   * @param mMaxPages The maximum number of pages to be retrieved.
+   * mMaxPages The maximum number of pages to be retrieved.
    */
   private final int mMaxPages;
   
   /**
-   * @param mRetrievedCount The current number of pages retrieved.
+   * mRetrievedCount The current number of pages retrieved.
    */
   private int mRetrievedCount = 0;
   
+  /**
+   * mRunning Indicates whether the thread is running.
+   */
+  private volatile boolean mRunning = true;
   
   /**
    * Single arg constructor.
@@ -109,6 +113,13 @@ public class PageRetriever extends Thread {
   }// End retrieve()
   
   /**
+   * Terminates the thread.
+   */
+  public void terminate() {
+    mRunning = false;
+  }
+  
+  /**
    * Checks whether links queue is empty.
    */
   private synchronized boolean linksQueueIsEmpty() {
@@ -127,7 +138,7 @@ public class PageRetriever extends Thread {
    * Main loop for PageRetriever loop.
    */
   public void run() {
-    while( true ) {
+    while( mRunning ) {
       if( !linksQueueIsEmpty() )
           retrieve(); //
     }

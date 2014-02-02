@@ -17,6 +17,11 @@ public class PageAnalyzer extends Thread{
 	
 	private SummaryObject sum;
 	
+	/**
+   * mRunning Indicates whether the thread is running.
+   */
+  private volatile boolean mRunning = true;
+	
 	public PageAnalyzer() {
 		this.sum = WebCrawler.sum;
 	}
@@ -98,10 +103,17 @@ public class PageAnalyzer extends Thread{
 	public synchronized int getPagesAnalyzed() {
 		return sum.getPagesAnalyzed();
 	}
+	
+	/**
+   * Terminates the thread.
+   */
+  public void terminate() {
+    mRunning = false;
+  }
 
 	@Override
 	public void run() {
-		while (true) {
+		while (mRunning) {
 			analyze();
 		}
 	}
