@@ -1,6 +1,7 @@
 package edu.uw.tcss422.util;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 public class SummaryObject {
@@ -8,7 +9,7 @@ public class SummaryObject {
 	private int totalURLs = 0;
 	private long totalWords = 0;
 	private long totalPageParseTime = 0;
-	private HashMap<String, Integer> keywords;
+	private HashMap<String, Integer> keywords = new HashMap<String, Integer>();
 	
 	/**
 	 * Increments the counter for pages analyzed.
@@ -83,8 +84,15 @@ public class SummaryObject {
 	/**
 	 * @param keywords the keywords to set
 	 */
-	public void setKeywords(HashMap<String, Integer> keywords) {
-		this.keywords = keywords;
+	public void setKeywords(HashSet<String> words) {
+		for (String word : words) {
+			this.keywords.put(word, 0);
+		}
+	}
+	
+	
+	public void updateKeyword(String key, Integer value) {
+		keywords.put(key, value);
 	}
 	
 	/**
