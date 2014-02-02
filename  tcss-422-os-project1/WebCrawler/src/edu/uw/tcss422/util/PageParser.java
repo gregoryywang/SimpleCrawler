@@ -2,11 +2,11 @@ package edu.uw.tcss422.util;
 /**
  * PageParser.java
  * A simple parser using JSoup to extract elements from web pages.
- * Requires Document object of web page to parse, or the page URL.
+ * Requires Page object of web page to parse.
  * Stores and returns all URLs and words found in the Document object.
  * 
  * @author yongyuwang
- * @version 01-28-2014
+ * @version 02-01-2014
  */
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 
-public class PageParser {
+public class PageParser extends Thread {
 
 	/**
 	 * A collection of ParseObjects which stores the results for each parse for the PageAnalyzer.
@@ -54,12 +54,13 @@ public class PageParser {
 	 * Main parsing method using Page object as input.
 	 * @param docPage the Page object to parse
 	 */
-	public void parse(Page page) {
+	public synchronized void  parse(Page page) {
 		
 		long startTime = System.currentTimeMillis();
 
 		ArrayList<String> untokenizdWords = new ArrayList<String>();
 				
+		// http://stackoverflow.com/questions/6803046/jsoup-baseuri-gone-after-select
 		Document doc = Jsoup.parse(page.getContent(), page.getURL());
 		
 		
@@ -105,7 +106,7 @@ public class PageParser {
 	 * @param source the ArrayList containing Strings to tokenize.
 	 * @return tokenizedWords the tokenizedArrayList of strings.
 	 */
-	public Collection<String> stringTokenizer(ArrayList<String> source){
+	public synchronized Collection<String> stringTokenizer(ArrayList<String> source){
 		Collection<String> tokenizedWords = new ArrayList<String>();
 		for (Iterator<String> iterator = source.iterator(); iterator.hasNext();){
 			String current = iterator.next();
@@ -123,15 +124,8 @@ public class PageParser {
 	 * Gets the collection of ParseObjects.
 	 * @return A collection of ParseObjects.
 	 */
-	public Collection<ParseObject> getParseObjects() {
+	public synchronized Collection<ParseObject> getParseObjects() {
 		return parseResults;
-	}
-	
-	/**
-	 * Clears the collection of ParseObjects.
-	 */
-	public void clearParseObjects() {
-		parseResults.clear();
 	}
 	
 }
