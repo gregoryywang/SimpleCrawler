@@ -1,13 +1,12 @@
 package edu.uw.tcss422.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
 import org.jsoup.select.Elements;
-
-import edu.uw.tcss422.navigation.WebCrawler;
 
 /**
  * Takes a collection of keywords and searches ParseObjects for those keywords.
@@ -16,13 +15,16 @@ import edu.uw.tcss422.navigation.WebCrawler;
  */
 public class PageAnalyzer extends Thread{
 	
-	private static volatile SummaryObject sum = new SummaryObject();
-	
 	/**
-   * mRunning Indicates whether the thread is running.
-   */
-  private volatile boolean mRunning = true;
-	
+	 * SummaryObject that keeps track of all the stats for the analyzed pages.
+	 */
+	private static volatile SummaryObject sum = new SummaryObject();
+
+	/**
+	 * mRunning Indicates whether the thread is running.
+	 */
+	private volatile boolean mRunning = true;
+
 	public PageAnalyzer(HashSet<String> keywords) {
 		sum.setKeywords(keywords);
 	}
@@ -34,7 +36,11 @@ public class PageAnalyzer extends Thread{
 	public void analyze() {
 		String next;
 		ParseObject parsed;
-		Collection<ParseObject> parseObjCol = WebCrawler.getParseObjects();
+		Collection<ParseObject> parseObjCol = new ArrayList<ParseObject>();
+		while (PageParser.hasParseObject()) {
+			parseObjCol.add(PageParser.getParseObject());
+		}
+//		Collection<ParseObject> parseObjCol = WebCrawler.getParseObjects();
 		Iterator<ParseObject> parserItr = parseObjCol.iterator();
 		
 		while (parserItr.hasNext()) {
@@ -54,8 +60,8 @@ public class PageAnalyzer extends Thread{
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Return the SummaryObject.
+	 * @return The SummaryObject containing all the stats for the parsed pages
 	 */
 	public synchronized SummaryObject getSummary() {
 		return sum;
@@ -97,20 +103,20 @@ public class PageAnalyzer extends Thread{
 		return newCount;
 	}
 
+//	/**
+//	 * Finds the number of pages analyzed for limiting purposes.
+//	 * @return The number of pages analyzed so far.
+//	 */
+//	public synchronized int getPagesAnalyzed() {
+//		return sum.getPagesAnalyzed();
+//	}
+
 	/**
-	 * Finds the number of pages analyzed for limiting purposes.
-	 * @return The number of pages analyzed so far.
+	 * Terminates the thread.
 	 */
-	public synchronized int getPagesAnalyzed() {
-		return sum.getPagesAnalyzed();
+	public void terminate() {
+		mRunning = false;
 	}
-	
-	/**
-   * Terminates the thread.
-   */
-  public void terminate() {
-    mRunning = false;
-  }
 
 	@Override
 	public void run() {
@@ -118,5 +124,4 @@ public class PageAnalyzer extends Thread{
 			analyze();
 		}
 	}
-
 }
