@@ -105,6 +105,7 @@ public class WebCrawler {
 		pageRetriever.start();
 
 		PageParser parser = new PageParser(pageRetriever);
+		parser.start();
 		Page page;
 		  
 		try {

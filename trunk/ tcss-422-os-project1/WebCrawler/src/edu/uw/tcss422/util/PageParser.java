@@ -45,7 +45,6 @@ public class PageParser extends Thread {
 	}
 	
 
-	
 	/**
 	 * Main parsing method using Page object as input.
 	 * @param docPage the Page object to parse
@@ -66,16 +65,10 @@ public class PageParser extends Thread {
 		// Adds all words in the HTML body to collection of words.
 		untokenizdWords.add(doc.body().text());
 
-		// DEBUG
-		// System.out.println("Word list for this page: " + words);
-
 		// Add link texts to list of words and back into PageRetriever
 		for (Element link : links) {
 			untokenizdWords.add(link.text());
 			retrieve.addURL(link.attr("abs:href"));
-        	
-			//DEBUG
-			//System.out.println(link.text());
 		}
 		
 		Collection<String> words = stringTokenizer(untokenizdWords);
@@ -121,7 +114,7 @@ public class PageParser extends Thread {
 	  
 	  /**
 	   * Lalala this doesn't work yet. 
-	   * And I'm begainning to think "implements runnable" is better.
+	   * And I'm beginning to think "implements runnable" is better.
 	   * Oh, and dubious design. 
 	   */
 	  public void run() {
