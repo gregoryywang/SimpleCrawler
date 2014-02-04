@@ -40,7 +40,6 @@ public class PageAnalyzer extends Thread{
 		while (PageParser.hasParseObject()) {
 			parseObjCol.add(PageParser.getParseObject());
 		}
-//		Collection<ParseObject> parseObjCol = WebCrawler.getParseObjects();
 		Iterator<ParseObject> parserItr = parseObjCol.iterator();
 		
 		while (parserItr.hasNext()) {
@@ -102,14 +101,6 @@ public class PageAnalyzer extends Thread{
 		int newCount = currentCount + Collections.frequency(collection, keyword);
 		return newCount;
 	}
-
-//	/**
-//	 * Finds the number of pages analyzed for limiting purposes.
-//	 * @return The number of pages analyzed so far.
-//	 */
-//	public synchronized int getPagesAnalyzed() {
-//		return sum.getPagesAnalyzed();
-//	}
 
 	/**
 	 * Terminates the thread.
