@@ -1,8 +1,6 @@
 package edu.uw.tcss422.navigation;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -11,15 +9,14 @@ import edu.uw.tcss422.util.Page;
 import edu.uw.tcss422.util.PageAnalyzer;
 import edu.uw.tcss422.util.PageParser;
 import edu.uw.tcss422.util.PageRetriever;
-import edu.uw.tcss422.util.ParseObject;
 import edu.uw.tcss422.util.SummaryObject;
 
 public class WebCrawler {
 	
-	/**
-	 * Collection of ParseObjects before they have been analyzed.
-	 */
-	private static volatile Collection<ParseObject> parseObjects = new ArrayList<ParseObject>();
+//	/**
+//	 * Collection of ParseObjects before they have been analyzed.
+//	 */
+//	private static volatile Collection<ParseObject> parseObjects = new ArrayList<ParseObject>();
 
 	/**
 	 * @param args Command line arguments passed by user
@@ -82,7 +79,7 @@ public class WebCrawler {
 
 		} while (pageRetriever.hasNext());
 			
-		setParseObjects(parser.getParseObjects());
+//		setParseObjects(parser.getParseObjects());
 		analyzer.analyze();
 
 		SummaryObject sum = analyzer.getSummary();
@@ -121,11 +118,11 @@ public class WebCrawler {
 			}
 		} while (pageRetriever.hasNext());
 			
-		setParseObjects(parser.getParseObjects());
+//		setParseObjects(parser.getParseObjects());
 		
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {}
+//		try {
+//			Thread.sleep(3000);
+//		} catch (InterruptedException e) {}
 		
 		SummaryObject sum = pageAnalyzer.getSummary();
 		System.out.println(generateString(sum));
@@ -178,17 +175,17 @@ public class WebCrawler {
 		return sb.toString();
 	}
 
-	/**
-	 * @return the parseObjects
-	 */
-	public static Collection<ParseObject> getParseObjects() {
-		return parseObjects;
-	}
-
-	/**
-	 * @param parseObjects the parseObjects to set
-	 */
-	public static void setParseObjects(Collection<ParseObject> parseObjects) {
-		WebCrawler.parseObjects = parseObjects;
-	}
+//	/**
+//	 * @return the parseObjects
+//	 */
+//	public static Collection<ParseObject> getParseObjects() {
+//		return parseObjects;
+//	}
+//
+//	/**
+//	 * @param parseObjects the parseObjects to set
+//	 */
+//	public static void setParseObjects(Collection<ParseObject> parseObjects) {
+//		WebCrawler.parseObjects = parseObjects;
+//	}
 }

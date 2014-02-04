@@ -6,6 +6,7 @@
 package edu.uw.tcss422.util;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
 
@@ -35,7 +36,10 @@ public class ParserTest {
         Page page = new Page(url, content);
         parser.parse(page);
         
-        Collection <ParseObject> results = parser.getParseObjects();
+        Collection <ParseObject> results = new ArrayList<ParseObject>();
+        while (PageParser.hasParseObject()) {
+        	results.add(PageParser.getParseObject());
+        }
         
         // displays words and links for each ParseObject.
         for (ParseObject object : results) {

@@ -24,7 +24,7 @@ public class PageParser extends Thread {
 	/**
 	 * A collection of ParseObjects which stores the results for each parse for the PageAnalyzer.
 	 */
-	private Collection<ParseObject> parseResults = new ArrayList<ParseObject>();
+	private static ArrayList<ParseObject> parseResults = new ArrayList<ParseObject>();
 
 	/**
 	 * The PageRetriever object.
@@ -119,7 +119,7 @@ public class PageParser extends Thread {
 	   */
 	  public void run() {
 	    while( mRunning ) {
-	      getParseObjects();
+//	      getParseObjects();
 	    }
 	  }
 	
@@ -128,8 +128,12 @@ public class PageParser extends Thread {
 	 * Gets the collection of ParseObjects.
 	 * @return A collection of ParseObjects.
 	 */
-	public synchronized Collection<ParseObject> getParseObjects() {
-		return parseResults;
+	public synchronized static ParseObject getParseObject() {
+		return parseResults.remove(0);
+	}
+	
+	public synchronized static boolean hasParseObject() {
+		return !parseResults.isEmpty();
 	}
 	
 }
