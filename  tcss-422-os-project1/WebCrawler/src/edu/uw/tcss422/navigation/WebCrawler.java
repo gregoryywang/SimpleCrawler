@@ -11,12 +11,11 @@ import edu.uw.tcss422.util.PageParser;
 import edu.uw.tcss422.util.PageRetriever;
 import edu.uw.tcss422.util.SummaryObject;
 
+/**
+ * A webcrawler capable of using multiple threads to parse webpages in search of specific keywords.
+ * @authors Oscar Hong, Roshun Jones, Trygve Stageberg, Yong Wang
+ */
 public class WebCrawler {
-	
-//	/**
-//	 * Collection of ParseObjects before they have been analyzed.
-//	 */
-//	private static volatile Collection<ParseObject> parseObjects = new ArrayList<ParseObject>();
 
 	/**
 	 * @param args Command line arguments passed by user
@@ -60,7 +59,6 @@ public class WebCrawler {
 	 * @param keywords HashSet containing the user-specified keywords to search for
 	 */
 	private static void single(int maxPagesToParse, String url, HashSet<String> keywords) {
-//		sum.setKeywords(keywords);
 		PageAnalyzer analyzer = new PageAnalyzer(keywords);
 
 		PageRetriever pageRetriever = new PageRetriever(url, maxPagesToParse);
@@ -78,8 +76,7 @@ public class WebCrawler {
 			}
 
 		} while (pageRetriever.hasNext());
-			
-//		setParseObjects(parser.getParseObjects());
+
 		analyzer.analyze();
 
 		SummaryObject sum = analyzer.getSummary();
@@ -93,7 +90,7 @@ public class WebCrawler {
 	 * @param keywords HashSet containing the user-specified keywords to search for
 	 */
 	private static void multi(int maxPagesToParse, String url, HashSet<String> keywords) {
-//		sum.setKeywords(keywords);
+		//Create PageAnalyzer thread and start
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(keywords);
 		pageAnalyzer.start();
 		
@@ -117,11 +114,10 @@ public class WebCrawler {
 				page = pageRetriever.next();
 			}
 		} while (pageRetriever.hasNext());
-			
-//		setParseObjects(parser.getParseObjects());
 		
+//		Used to make sure the Analyzer has enough time to finish up.
 //		try {
-//			Thread.sleep(3000);
+//			Thread.sleep(1000);
 //		} catch (InterruptedException e) {}
 		
 		SummaryObject sum = pageAnalyzer.getSummary();
@@ -150,6 +146,7 @@ public class WebCrawler {
 		sb.append(summary.getTotalURLs() / summary.getPagesAnalyzed());
 		sb.append("\n\nKeywords\tAvg. hits per page\t    Total hits\n");
 		
+		// Keyword occurrences 
 		Iterator<String> keyItr = summary.getKeywords().keySet().iterator();
 		String next;
 		double num;
@@ -174,18 +171,4 @@ public class WebCrawler {
 		
 		return sb.toString();
 	}
-
-//	/**
-//	 * @return the parseObjects
-//	 */
-//	public static Collection<ParseObject> getParseObjects() {
-//		return parseObjects;
-//	}
-//
-//	/**
-//	 * @param parseObjects the parseObjects to set
-//	 */
-//	public static void setParseObjects(Collection<ParseObject> parseObjects) {
-//		WebCrawler.parseObjects = parseObjects;
-//	}
 }

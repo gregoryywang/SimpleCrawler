@@ -125,15 +125,18 @@ public class PageParser extends Thread {
 	
 	
 	/**
-	 * Gets the collection of ParseObjects.
-	 * @return A collection of ParseObjects.
+	 * Gets a ParseObject from parseResults.
+	 * @return A ParseObject.
 	 */
 	public synchronized static ParseObject getParseObject() {
 		return parseResults.remove(0);
 	}
 	
+	/**
+	 * Checks to see if parseResults contains any ParseObjects.
+	 * @return whether or not the collection is empty.
+	 */
 	public synchronized static boolean hasParseObject() {
 		return !parseResults.isEmpty();
 	}
-	
 }
