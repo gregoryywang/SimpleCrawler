@@ -148,7 +148,7 @@ public class WebCrawler {
 		sb.append("\nAverage words per page: ");
 		sb.append(summary.getTotalWords() / summary.getPagesAnalyzed());
 		sb.append("\nAverage keywords per page: ");
-		sb.append(summary.getTotalKeywords());
+		sb.append(summary.getTotalKeywords() / summary.getPagesAnalyzed());
 		sb.append("\nAverage URLs per page: ");
 		sb.append(summary.getTotalURLs() / summary.getPagesAnalyzed());
 		sb.append("\n\nKeywords\tAvg. hits per page\t    Total hits\n");
