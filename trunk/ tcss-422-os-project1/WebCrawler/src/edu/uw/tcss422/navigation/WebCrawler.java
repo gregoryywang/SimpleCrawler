@@ -12,7 +12,7 @@ import edu.uw.tcss422.util.PageRetriever;
 import edu.uw.tcss422.util.SummaryObject;
 
 /**
- * A webcrawler capable of using multiple threads to parse webpages in search of specific keywords.
+ * A web crawler capable of using multiple threads to parse web pages in search of specific keywords.
  * @authors Oscar Hong, Roshun Jones, Trygve Stageberg, Yong Wang
  */
 public class WebCrawler {
