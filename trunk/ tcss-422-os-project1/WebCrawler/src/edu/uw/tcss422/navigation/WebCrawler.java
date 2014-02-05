@@ -100,7 +100,7 @@ public class WebCrawler {
 		pageRetriever.start();
 
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(50);
 		} catch (InterruptedException e) {}
 			
 		PageParser parser = new PageParser(pageRetriever);
