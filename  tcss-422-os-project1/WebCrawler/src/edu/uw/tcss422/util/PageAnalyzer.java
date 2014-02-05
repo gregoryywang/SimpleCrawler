@@ -43,7 +43,6 @@ public class PageAnalyzer extends Thread{
 		Iterator<ParseObject> parserItr = parseObjCol.iterator();
 		
 		while (parserItr.hasNext()) {
-			sum.incrementPageCounter();
 			parsed = parserItr.next();
 			parserItr.remove();
 			countURLs(parsed.getLinks());

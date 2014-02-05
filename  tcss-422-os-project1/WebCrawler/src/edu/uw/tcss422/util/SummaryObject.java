@@ -10,13 +10,6 @@ public class SummaryObject {
 	private long totalWords = 0;
 	private long totalPageParseTime = 0;
 	private HashMap<String, Integer> keywords = new HashMap<String, Integer>();
-	
-	/**
-	 * Increments the counter for pages analyzed.
-	 */
-	public void incrementPageCounter() {
-		setPagesAnalyzed(getPagesAnalyzed() + 1);
-	}
 
 	/**
 	 * @return the pagesAnalyzed
