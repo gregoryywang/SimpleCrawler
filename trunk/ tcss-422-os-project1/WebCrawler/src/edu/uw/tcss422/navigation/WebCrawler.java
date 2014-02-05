@@ -80,6 +80,7 @@ public class WebCrawler {
 		analyzer.analyze();
 
 		SummaryObject sum = analyzer.getSummary();
+		sum.setPagesAnalyzed(pageRetriever.getRetrievedCount());
 		System.out.println(generateString(sum));
 	}
 
@@ -117,6 +118,7 @@ public class WebCrawler {
 //		} catch (InterruptedException e) {}
 		
 		SummaryObject sum = pageAnalyzer.getSummary();
+		sum.setPagesAnalyzed(pageRetriever.getRetrievedCount());
 		System.out.println(generateString(sum));
 		
 		//Stop threads
