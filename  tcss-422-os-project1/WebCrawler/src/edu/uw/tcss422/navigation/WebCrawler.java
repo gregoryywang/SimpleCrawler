@@ -102,10 +102,6 @@ public class WebCrawler {
 		parser.start();
 		Page page;
 		  
-		try {
-	        Thread.sleep(3000); //Temp sleep to give thread time to work
-	      } catch (InterruptedException e) {}
-		
 		page = pageRetriever.next();
 
 		do {
