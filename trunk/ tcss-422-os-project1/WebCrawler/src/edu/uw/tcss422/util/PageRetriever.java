@@ -107,7 +107,7 @@ public class PageRetriever extends Thread {
           
         } catch( IOException e ) {
         	//System.err.println(e.toString()); Only use for debugging
-        }
+        } catch( IllegalArgumentException e){}
       }
     }
   }// End retrieve()
