@@ -137,11 +137,20 @@ public class WebCrawler {
 		sb.append("\nUnique pages retrieved: ");
 		sb.append(summary.getPagesAnalyzed());
 		sb.append("\nAverage words per page: ");
-		sb.append(summary.getTotalWords() / summary.getPagesAnalyzed());
+		if (summary.getPagesAnalyzed() > 0)
+			sb.append(summary.getTotalWords() / summary.getPagesAnalyzed());
+		else
+			sb.append("N/A");
 		sb.append("\nAverage keywords per page: ");
-		sb.append(summary.getTotalKeywords() / summary.getPagesAnalyzed());
+		if (summary.getPagesAnalyzed() > 0)
+			sb.append(summary.getTotalKeywords() / summary.getPagesAnalyzed());
+		else
+			sb.append("N/A");
 		sb.append("\nAverage URLs per page: ");
-		sb.append(summary.getTotalURLs() / summary.getPagesAnalyzed());
+		if (summary.getPagesAnalyzed() > 0)
+			sb.append(summary.getTotalURLs() / summary.getPagesAnalyzed());
+		else 
+			sb.append("N/A");
 		sb.append("\n\nKeywords\tAvg. hits per page\t    Total hits\n");
 		
 		// Keyword occurrences 
@@ -155,17 +164,22 @@ public class WebCrawler {
 			} else {
 				sb.append(next + "\t\t\t");
 			}
-			
-			num = (double) summary.getKeywords().get(next) / summary.getPagesAnalyzed();
-			DecimalFormat df = new DecimalFormat("#.##");
-			sb.append(df.format(num));
+			if (summary.getPagesAnalyzed() > 0) {
+				num = (double) summary.getKeywords().get(next) / summary.getPagesAnalyzed();
+				DecimalFormat df = new DecimalFormat("#.##");
+				sb.append(df.format(num));
+			} else
+				sb.append("N/A");
 			
 			sb.append("\t\t\t" + summary.getKeywords().get(next) + "\n");
 		}
 		
 		sb.append("\nAverage parse time per page: ");
-		sb.append(summary.getTotalPageParseTime() / summary.getPagesAnalyzed());
-		sb.append(" ms");
+		if (summary.getPagesAnalyzed() > 0) {
+			sb.append(summary.getTotalPageParseTime() / summary.getPagesAnalyzed());
+			sb.append(" ms");
+		} else
+			sb.append("N/A");
 		
 		return sb.toString();
 	}
