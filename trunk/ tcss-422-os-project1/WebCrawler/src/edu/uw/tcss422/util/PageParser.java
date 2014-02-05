@@ -116,7 +116,7 @@ public class PageParser extends Thread {
                 builder.append(Character.isLowerCase(c) ? c : Character.toLowerCase(c));
             }
             else if(c == '\'') {
-            	builder.append(Character.isLowerCase(c) ? c : Character.toLowerCase(c));
+            	builder.append(c);
             }
         }
         return builder.toString();
