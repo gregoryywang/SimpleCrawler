@@ -109,13 +109,18 @@ public class PageParser extends Thread {
 	 * @param input the string to process
 	 * @return the processed string
 	 */
-	public String stringProcessor(final String input){
-	    final StringBuilder builder = new StringBuilder();
-	    for(final char c : input.toCharArray())
-	        if(Character.isLetterOrDigit(c))
-	            builder.append(Character.isLowerCase(c) ? c : Character.toLowerCase(c));
-	    return builder.toString();
-	}
+	public static String stringProcessor(final String input){
+        final StringBuilder builder = new StringBuilder();
+        for(final char c : input.toCharArray()) {
+            if(Character.isLetterOrDigit(c)) {
+                builder.append(Character.isLowerCase(c) ? c : Character.toLowerCase(c));
+            }
+            else if(c == '\'') {
+            	builder.append(Character.isLowerCase(c) ? c : Character.toLowerCase(c));
+            }
+        }
+        return builder.toString();
+    }
 	
 	 /**
 	   * Terminates the thread.
