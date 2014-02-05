@@ -99,6 +99,10 @@ public class WebCrawler {
 		PageRetriever pageRetriever = new PageRetriever(url, maxPagesToParse);
 		pageRetriever.start();
 
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {}
+			
 		PageParser parser = new PageParser(pageRetriever);
 		parser.start();
 		Page page;
