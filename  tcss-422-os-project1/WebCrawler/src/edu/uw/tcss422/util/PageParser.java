@@ -67,7 +67,6 @@ public class PageParser extends Thread {
 
 		// Add link texts to list of words and back into PageRetriever
 		for (Element link : links) {
-			untokenizdWords.add(link.text());
 			retrieve.addURL(link.attr("abs:href"));
 		}
 		
@@ -98,11 +97,24 @@ public class PageParser extends Thread {
 			String current = iterator.next();
 			String[] tolken = current.split(" ");
 			for (String element : tolken) {
-				element = element.toLowerCase();
+				element = stringProcessor(element);
 				tokenizedWords.add(element);
 			}
 		}
 		return tokenizedWords;
+	}
+	
+	/**
+	 * Removes special symbols and punctuation from the string
+	 * @param input the string to process
+	 * @return the processed string
+	 */
+	public String stringProcessor(final String input){
+	    final StringBuilder builder = new StringBuilder();
+	    for(final char c : input.toCharArray())
+	        if(Character.isLetterOrDigit(c))
+	            builder.append(Character.isLowerCase(c) ? c : Character.toLowerCase(c));
+	    return builder.toString();
 	}
 	
 	 /**
@@ -113,9 +125,7 @@ public class PageParser extends Thread {
 	  }
 	  
 	  /**
-	   * Lalala this doesn't work yet. 
-	   * And I'm beginning to think "implements runnable" is better.
-	   * Oh, and dubious design. 
+	   * Overrides thread run method.
 	   */
 	  public void run() {
 	    while( mRunning ) {
