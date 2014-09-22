@@ -24,6 +24,7 @@ public class ParserTest {
 		if (url.equals("1")) {
 			url = "http://www.aol.com";
 		}
+		scan.close();
 		
 		// note that the PageRetriever does not actually do anything here.
 		PageParser parser = new PageParser(new PageRetriever("",3));
