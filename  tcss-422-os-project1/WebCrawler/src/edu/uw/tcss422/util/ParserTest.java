@@ -24,7 +24,6 @@ public class ParserTest {
 		if (url.equals("1")) {
 			url = "http://www.aol.com";
 		}
-		scan.close();
 		
 		// note that the PageRetriever does not actually do anything here.
 		PageParser parser = new PageParser(new PageRetriever("",3));
@@ -59,7 +58,7 @@ public class ParserTest {
             System.out.println("Page contains the word [" + keyword + "]: " + words.contains(keyword));
             System.out.println("Total parsing time for this page was " + object.getParseTime() + " milliseconds.");
         }
-    
+		scan.close();
 	}
 
 }
